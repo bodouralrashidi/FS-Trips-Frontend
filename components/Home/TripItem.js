@@ -1,23 +1,38 @@
-import { Image, Text, StyleSheet, Dimensions } from "react-native";
-import { Center, Container } from "native-base";
+import { Image, Text, StyleSheet, Dimensions, View } from "react-native";
 import { Link } from "@react-navigation/native";
 
-export default function TripItem({ trip }) {
+export default function TripItem({ item: trip }) {
   return (
-    <Container style={styles.container}>
+    // <Link>
+    <View style={styles.card}>
       <Image style={styles.cardImage} source={{ uri: trip.image }} />
-      <Text>{trip.title}</Text>
-    </Container>
+      <Text style={styles.cardText}>{trip.title}</Text>
+    </View>
+    // </Link>
   );
 }
 
 const styles = StyleSheet.create({
-  cardImage: {
-    width: Dimensions.get("window").width,
-    height: 200,
-    resizeMode: "stretch",
+  card: {
+    position: "relative",
+    marginHorizontal: 15,
+    marginBottom: 15,
+    borderRadius: 20,
+    overflow: "hidden",
   },
-  container: {
-    width: Dimensions.get("window").width,
+  cardImage: {
+    height: 200,
+  },
+  cardText: {
+    position: "absolute",
+    color: "white",
+    bottom: 15,
+    left: 0,
+    right: 0,
+    textShadowColor: "black",
+    textShadowOffset: { width: -1, height: 0 },
+    textShadowRadius: 10,
+    fontSize: 16,
+    textAlign: "center",
   },
 });
