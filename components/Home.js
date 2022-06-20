@@ -1,11 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import authStore from './../stores/authStore'
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import authStore from "./../stores/authStore";
 export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Hi {authStore.user.username}</Text>
+      <Text>Hi </Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -14,8 +14,8 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
