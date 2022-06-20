@@ -1,8 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { StyleSheet, FlatList, View } from "react-native";
+import { FlatList, View } from "react-native";
 import tripStore from "../../stores/tripStore";
 import TripItem from "./TripItem";
+import FloatingActionButton from "./FloatingActionButton";
 
 function Home() {
   const trips = tripStore.trips;
@@ -14,6 +15,7 @@ function Home() {
         renderItem={TripItem}
         keyExtractor={(item) => item._id}
       />
+      <FloatingActionButton />
     </View>
   );
 }
