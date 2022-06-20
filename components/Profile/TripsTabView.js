@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import profileStore from "../../stores/profileStore"
 
 export default function TripsTabView() {
+
   const text = "island";
   const image =
     "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg";
