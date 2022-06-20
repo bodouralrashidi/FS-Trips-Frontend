@@ -14,8 +14,10 @@ class TripStore {
   fetchTrips = async () => {
     const [response, error] = await tryCatch(() => instance.get(baseURL));
     if (error) return console.error(error);
-    this.trips = response.data;
+    this.setTrips(response.data);
   };
+
+  setTrips = (trips) => (this.trips = [...trips]);
 }
 
 async function tryCatch(promise) {
