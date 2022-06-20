@@ -30,8 +30,9 @@ export default function App() {
       <Tab.Screen name="Home" component={Home} options={{ tabBarIcon: ({size,focused,color}) => { return ( <Image style={{ width: 30, height: 30, tintColor: "gray",}} source={ require("./assets/outline/home.png")}/>);}, }} />
       
       {/* Post icon */}
-      <Tab.Screen options={{ tabBarIcon: ({ color }) => ( <View style={styles.tabBarIcon}>
-      <Image source={ require("./assets/outline/location-med.png")} resizeMode="contain" style={styles.imageicon}/></View> ),}} name="Post" component={Post} />
+      {/* <Tab.Screen options={{ tabBarIcon: ({ color }) => ( <View style={styles.tabBarIcon}>
+      <Image source={ require("./assets/outline/location-med.png")} resizeMode="contain" style={styles.imageicon}/></View> ),}} name="Post" component={Post} /> */}
+      <Tab.Screen name="Post" component={Post} options={{ tabBarIcon: ({size,focused,color}) => { return ( <Image style={{ width: 30, height: 30, tintColor: "gray",}} source={ require("./assets/outline/user.png")}/>);}, }} />
 
       {/* Profile icon */}
       <Tab.Screen name="Profile" component={Profile} options={{ tabBarIcon: ({size,focused,color}) => { return ( <Image style={{ width: 30, height: 30, tintColor: "gray",}} source={ require("./assets/outline/user.png")}/>);}, }} />
