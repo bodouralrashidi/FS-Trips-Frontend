@@ -1,11 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import authStore from './../stores/authStore'
-export default function Home({ navigation }) {
+export default function Post() {
   return (
     <View style={styles.container}>
-      <Text>Hi {authStore.user.username}</Text>
+      <Text>Post Me</Text>
       <StatusBar style="auto" />
     </View>
   );
