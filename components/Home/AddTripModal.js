@@ -32,8 +32,21 @@ export default AddTripModal;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 30,
+    ...Platform.select({
+      ios: {
+      flex: 1,
+      marginTop:70,
+      paddingHorizontal: 30,
+      },
+      android: {
+        flex: 1,
+        paddingHorizontal: 30,
+      },
+      default: {
+        flex: 1,
+        paddingHorizontal: 30,
+      }
+    })
   },
   header: {
     flexDirection: "row",

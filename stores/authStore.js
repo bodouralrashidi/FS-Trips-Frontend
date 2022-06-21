@@ -4,16 +4,21 @@ import jwt_decode from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthStore {
+  user = null;
   constructor() {
     makeAutoObservable(this);
   }
-  user = null;
+
   signup = async (userData) => {
     try {
-      const response = await instance.post("/signup", userData);
-      this.signin(userData);
+      const response = await instance.post('/signup', userData);
+      const decoded = jwt_decode(response.data);
+      const jsonValue = JSON.stringify(decoded);
+      await AsyncStorage.setItem('myToken', jsonValue);
+      instance.defaults.headers.common.Authorization = `Bearer ${response.data}`;
+      this.user = decoded;
     } catch (error) {
-      console.error(error);
+      console.log("signup",error)
     }
   };
 
@@ -22,7 +27,7 @@ class AuthStore {
       const response = await instance.post("/signin", userData);
       this.setUser(response.data);
     } catch (error) {
-      console.error(error);
+      console.log("signin",error)
     }
   };
 
