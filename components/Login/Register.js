@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
 import {useState} from 'react';
-import { StyleSheet,TouchableOpacity, TextInput, Text, View, Button,Image, Platform, TouchableWithoutFeedback,KeyboardAvoidingView,Keyboard} from 'react-native';
+import { observer } from 'mobx-react';
+import { StyleSheet,TouchableOpacity, TextInput, Text, View, Image, Platform, TouchableWithoutFeedback,KeyboardAvoidingView,Keyboard} from 'react-native';
 import authStore from './../../stores/authStore'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function Login({ navigation }) {
+function Register({ navigation }) {
   const [user, setUser] = useState({
     username: "",
     password: "",
+    Fname: "",
+    Lname: "",
   });
-  
   const handleSubmit = async () => {
-    await authStore.signin(user);
-    const token = await AsyncStorage.getItem('myToken')
+    await authStore.signup(user);
+    const token = await AsyncStorage.getItem('myToken');
     if (token) navigation.navigate('Home');
-    
   };
   return (
     <KeyboardAvoidingView
@@ -24,58 +24,74 @@ function Login({ navigation }) {
   >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
-
-      <TouchableOpacity style={styles.backButtonContainer} onPress={()=>(navigation.goBack())} >
+    <TouchableOpacity style={styles.backButtonContainer} onPress={()=>(navigation.goBack())} >
         <Text style={styles.GOback} >Back</Text>
     </TouchableOpacity>
-    <Image style={styles.Image} source={ require("./../../assets/Welcome/login.gif")}/>
-    <Text style={styles.WelcomeText}><Text  style={{fontWeight:"100"}}>Welcome</Text> Back!</Text>
+    <Text style={styles.GetAway}>GetAway</Text>
+    <TextInput
+        placeholder="First Name"
+        name="Fname"
+        placeholderTextColor="#fff"
+        style={styles.input}
+        onChangeText={(Fname) => setUser({ ...user, Fname })}
+      />
+       <TextInput
+        placeholder="Last Name"
+        name="Lname"
+        placeholderTextColor="#fff"
+        style={styles.input}
+        onChangeText={(Lname) => setUser({ ...user, Lname })}
+      />
       <TextInput
         placeholder="Username"
         name="username"
-        placeholderTextColor="#5f6368"
+        placeholderTextColor="#fff"
         style={styles.input}
         onChangeText={(username) => setUser({ ...user, username })}
       />
       <TextInput
         placeholder="Password"
         name="password"
-        placeholderTextColor="#5f6368"
+        placeholderTextColor="#fff"
         onChangeText={(password) => setUser({ ...user, password })}
         style={styles.input}
         secureTextEntry
       />
       <TouchableOpacity onPress={handleSubmit} style={styles.appButtonContainer}>
-        <Text style={styles.appButtonText}>Login</Text>
+        <Text style={styles.appButtonText}>Register</Text>
     </TouchableOpacity>
-    <TouchableOpacity onPress={()=>(navigation.navigate('Register'))}>
-        <Text style={styles.registerText}>Haven't Registerd yet, Join Now</Text>
-    </TouchableOpacity>
-       
     </View>
-    </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+    <Image style={styles.gitImage} source={ require("./../../assets/Welcome/XTEC.gif")}/>
+        </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     paddingTop:50,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#9ef1fe',
     width:"100%",
     height: "100%"
   },
   appButtonContainer: {
     elevation: 8,
-    backgroundColor: "#97e5f1",
+    backgroundColor: "#fff",
     borderRadius: 100,
     paddingVertical: 15,
     width:180,
     marginTop:50,
   },
+  gitImage:{
+    position:'absolute',
+    bottom:0,
+    width:'100%',
+    height:190,
+    resizeMode: 'stretch',
+  },
   appButtonText: {
     fontSize: 16,
-    color: "#fff",
+    color: "#9ef3ff",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase"
@@ -86,35 +102,20 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius:20,
-    borderColor: '#5f6368',
+    borderColor: '#fff',
     marginBottom: -30,
     marginTop:50,
   },
-  Image:{ 
-    position:"absolute",
-    marginTop:100,
-    marginBottom:10,
-    resizeMode: 'contain',
-    width: "70%", 
-    height: "30%",
-},
-WelcomeText:{
-  fontSize: 25,
-  marginTop:220,
-  color: "#5f6368",
-  fontWeight: "bold",
-  alignSelf: "center",
-},
 GOback:{
   fontSize: 12,
-    color: "#fff",
+    color: "#9ef3ff",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase"
 },  
 backButtonContainer:{
   elevation: 8,
-  backgroundColor: "#97e5f1",
+  backgroundColor: "#fff",
   borderRadius: 15,
   paddingVertical: 10,
   width:60,
@@ -122,10 +123,13 @@ backButtonContainer:{
   position:"absolute",
   right:"80%",
 },
-registerText:{
-  color: "#5f6368",
-  position: "relative",
-  bottom: -150,
-},
+GetAway:{
+  position:"relative",
+  marginTop:90,
+  fontSize: 30,
+  color:"#fff",
+  textTransform: "uppercase",
+  fontWeight: "bold",
+}
 });
-export default observer(Login)
+export default observer(Register)
