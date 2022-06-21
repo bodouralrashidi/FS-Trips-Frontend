@@ -96,8 +96,8 @@ class ProfileStore {
   };
 }
 
-const ProfileStore = new ProfileStore();
-ProfileStore.fetchProfile();
+const profileStore = new ProfileStore();
+profileStore.fetchProfile();
 // It will only call this function when the app first starts
 
 export default ProfileStore;
