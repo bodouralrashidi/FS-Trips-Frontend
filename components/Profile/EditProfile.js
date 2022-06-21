@@ -14,7 +14,7 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
-export default function EditProfile() {
+export default function EditProfile({navigation}) {
   const image =
     "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg";
   const [textFieldValue, setTextFieldValue] = React.useState(undefined);

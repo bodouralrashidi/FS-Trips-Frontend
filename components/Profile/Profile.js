@@ -7,13 +7,12 @@ import TripsTabView from "./TripsTabView"
 import EditProfile from "./EditProfile";
 
 //Navigation import
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+
 const TripsRoute = () => (
   <TripsTabView/>
 );
 const FavouriteRoute = () => (
-  <EditProfile/>
+  <FavouriteTabView/>
 );
 
 const initialLayout = { width: Dimensions.get("window").width };
@@ -32,10 +31,9 @@ export default function Profile({navigation}) {
 
   return (
     <>
-  
       <View style={{ height: 100 }}>
       <TouchableOpacity>
-        <Button title="Edit Profile" onPress={() =>navigation.navigate()} />
+        <Button title="Edit Profile" onPress={() =>navigation.navigate("EditProfile")} />
         </TouchableOpacity>
       </View>
       <TabView
