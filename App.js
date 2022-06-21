@@ -1,13 +1,14 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "./components/Home";
-import Profile from "./components/Profile/Profile";
-import Login from "./components/Login/Login";
-import Post from "./components/Post/Post";
-import authStore from "./stores/authStore";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View,Image } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from './components/Home/Home'
+import Profile from './components/Profile/Profile'
+import Login from './components/Login/Login'
+import Post from './components/Post/Post'
+import authStore from './stores/authStore'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
 import { NativeBaseProvider } from 'native-base';
 
 export default function App() {
@@ -22,78 +23,26 @@ export default function App() {
 
   return (
     <NativeBaseProvider>
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Profile"
-        screenOptions={{
-          tabBarShowLabel: false,
-          tabBarStyle: [{ display: "flex" }, null],
-        }}
-      >
+      <NavigationContainer>
+      <Tab.Navigator initialRouteName="Home" screenOptions={{ "tabBarShowLabel": false, "tabBarStyle": [{"display": "flex"},null] }}>
+        
         {/* Login */}
-        <Tab.Screen
-          name="Login"
-          options={{
-            tabBarStyle: { display: "none" },
-            tabBarButton: () => null,
-            tabBarVisible: false,
-          }}
-          component={Login}
-        />
-
+        <Tab.Screen name="Login" options={{ tabBarStyle: { display: "none" },tabBarButton: () => null, tabBarVisible: false}} component={Login} />
+      
         {/* Home icon */}
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarIcon: ({ size, focused, color }) => {
-              return (
-                <Image
-                  style={{ width: 30, height: 30, tintColor: "gray" }}
-                  source={require("./assets/outline/home.png")}
-                />
-              );
-            },
-          }}
-        />
-
+        <Tab.Screen name="Home" component={Home} options={{ tabBarIcon: ({size,focused,color}) => { return ( <Image style={{ width: 30, height: 30, tintColor: "gray",}} source={ require("./assets/outline/home.png")}/>);}, }} />
+        
         {/* Post icon */}
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ color }) => (
-              <View style={styles.tabBarIcon}>
-                <Image
-                  source={require("./assets/outline/location-med.png")}
-                  resizeMode="contain"
-                  style={styles.imageicon}
-                />
-              </View>
-            ),
-          }}
-          name="Post"
-          component={Post}
-        />
-        {/* <Tab.Screen name="Post" component={Post} options={{ tabBarIcon: ({size,focused,color}) => { return ( <Image style={{ width: 30, height: 30, tintColor: "gray",}} source={ require("./assets/outline/user.png")}/>);}, }} /> */}
+        {/* <Tab.Screen options={{ tabBarIcon: ({ color }) => ( <View style={styles.tabBarIcon}>
+        <Image source={ require("./assets/outline/location-med.png")} resizeMode="contain" style={styles.imageicon}/></View> ),}} name="Post" component={Post} /> */}
+        <Tab.Screen name="Post" component={Post} options={{ tabBarIcon: ({size,focused,color}) => { return ( <Image style={{ width: 30, height: 30, tintColor: "gray",}} source={ require("./assets/outline/user.png")}/>);}, }} />
 
         {/* Profile icon */}
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            tabBarIcon: ({ size, focused, color }) => {
-              return (
-                <Image
-                  style={{ width: 30, height: 30, tintColor: "gray" }}
-                  source={require("./assets/outline/user.png")}
-                />
-              );
-            },
-          }}
-        />
-
+        <Tab.Screen name="Profile" component={Profile} options={{ tabBarIcon: ({size,focused,color}) => { return ( <Image style={{ width: 30, height: 30, tintColor: "gray",}} source={ require("./assets/outline/user.png")}/>);}, }} />
+      
         {/* Profile icon */}
       </Tab.Navigator>
-    </NavigationContainer>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 }
