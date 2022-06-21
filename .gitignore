@@ -15,6 +15,3 @@ web-build/
 
 # for abdullah
 .prettierignore
-
-# instance depends on pc ip address
-stores/instance.js

@@ -1,4 +1,4 @@
-import { Image, Text, StyleSheet, Dimensions, View } from "react-native";
+import { Image, Text, StyleSheet, View } from "react-native";
 import { Link } from "@react-navigation/native";
 
 export default function TripItem({ item: trip }) {

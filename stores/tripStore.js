@@ -11,10 +11,25 @@ class TripStore {
 
   trips = [];
 
+  emptyTrip = {
+    title: "",
+    description: "",
+    image: "",
+    location: "",
+  };
+
   fetchTrips = async () => {
     const [response, error] = await tryCatch(() => instance.get(baseURL));
     if (error) return console.error(error);
     this.setTrips(response.data);
+  };
+
+  addTrip = async (newTrip) => {
+    const [response, error] = await tryCatch(() =>
+      instance.post(baseURL, newTrip)
+    );
+    if (error) return console.error(error);
+    this.setTrips([...this.trips, response.data]);
   };
 
   setTrips = (trips) => (this.trips = [...trips]);

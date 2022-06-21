@@ -2,15 +2,12 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function FloatingActionButton() {
-  const handlePress = () => {
-    console.log("pressed");
-  };
+export default function FloatingActionButton({ openModal }) {
   return (
     <TouchableOpacity
       style={styles.container}
       activeOpacity={0.9}
-      onPress={handlePress}
+      onPress={openModal}
     >
       <Ionicons name="ios-add" size={32} color="white" />
     </TouchableOpacity>
