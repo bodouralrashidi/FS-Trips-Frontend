@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, ToastAndroid, Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from './components/Home'
+import Home from './components/Home/Home'
 import Profile from './components/Profile/Profile'
 import Login from './components/Login/Login'
 import Register from './components/Login/Register'
@@ -10,6 +10,8 @@ import NavLogin from './components/Login/index'
 import Post from './components/Post/Post'
 import authStore from './stores/authStore'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
+import { NativeBaseProvider } from 'native-base';
 
 export default function App() {
   const Tab = createBottomTabNavigator();
@@ -53,11 +55,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  tabBarIcon:{
+  tabBarIcon: {
     marginTop: 0,
     height: 60,
     width: 60,
