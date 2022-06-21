@@ -14,7 +14,7 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
-export default function EditProfile({navigation}) {
+export default function EditProfile({ navigation }) {
   const image =
     "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg";
   const [textFieldValue, setTextFieldValue] = React.useState(undefined);
@@ -31,10 +31,10 @@ export default function EditProfile({navigation}) {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text style={StyleSheet.flatten([styles.textEa, { color: "Black" }])}>
+          <Text style={StyleSheet.flatten([styles.textEa, { color: "black" }])}>
             Create Your Profile
           </Text>
-          <Text style={StyleSheet.flatten([styles.textUm, { color: "Black" }])}>
+          <Text style={StyleSheet.flatten([styles.textUm, { color: "black" }])}>
             Since this is your first time, we just need some basic information
             to get you started.
           </Text>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginTop: 24,
-    borderRadius: "50%",
+    borderRadius: 50,
   },
   textFieldK7: {
     height: 82,

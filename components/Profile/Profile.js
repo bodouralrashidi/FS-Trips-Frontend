@@ -38,7 +38,7 @@ export default function Profile({ navigation }) {
         <TouchableOpacity>
           <Button
             title="Edit Profile"
-            onPress={() => navigation.navigate("EditProfile")}
+            onPress={() => navigation.navigate("Edit")}
           />
         </TouchableOpacity>
       </View>
