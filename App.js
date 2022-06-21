@@ -9,7 +9,7 @@ import Post from "./components/Post/Post";
 import authStore from "./stores/authStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeBaseProvider } from 'native-base';
-
+import EditProfile from "./components/Profile/EditProfile";
 export default function App() {
   const Tab = createBottomTabNavigator();
 

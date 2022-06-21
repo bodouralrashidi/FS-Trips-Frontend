@@ -1,11 +1,14 @@
 import * as React from "react";
 import { Screen } from "native-base";
-import { View, StyleSheet, Dimensions, StatusBar, Button } from "react-native";
+import { View, StyleSheet, Dimensions, StatusBar, Button, TouchableOpacity } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 import FavouriteTabView from "./FavouriteTabView";
 import TripsTabView from "./TripsTabView"
 import EditProfile from "./EditProfile";
 
+//Navigation import
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 const TripsRoute = () => (
   <TripsTabView/>
 );
@@ -31,8 +34,9 @@ export default function Profile({navigation}) {
     <>
   
       <View style={{ height: 100 }}>
-        
-        <Button title="Edit Profile" onPress={() =>navigation.navigate('Profile', { name: 'Jane' })} />
+      <TouchableOpacity>
+        <Button title="Edit Profile" onPress={() =>navigation.navigate()} />
+        </TouchableOpacity>
       </View>
       <TabView
         navigationState={{ index, routes }}
