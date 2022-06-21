@@ -1,22 +1,31 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  ToastAndroid,
+} from "react-native";
 import { NavigationContainer, Nav } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import Profile from "./components/Profile/Profile";
 import Login from "./components/Login/Login";
+import NavLogin from "./components/Login/index";
+import Register from "./components/Login/Register";
 import Post from "./components/Post/Post";
 import authStore from "./stores/authStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeBaseProvider } from "native-base";
 import EditProfile from "./components/Profile/EditProfile";
 import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
 const { Navigator, Screen } = createStackNavigator();
+
 export default function App() {
   const Tab = createBottomTabNavigator();
-
   let isSignedIn = authStore.user;
-
   // const checkForToken = async () => {
   //   isSignedIn = await AsyncStorage.getItem('myToken')
   // };
@@ -26,21 +35,47 @@ export default function App() {
     <NativeBaseProvider>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Profile"
+          initialRouteName="NavLogin"
           screenOptions={{
             tabBarShowLabel: false,
             tabBarStyle: [{ display: "flex" }, null],
           }}
         >
+          {/* NavLogin */}
+          <Tab.Screen
+            name="Welcome"
+            options={{
+              headerShown: false,
+              tabBarStyle: { display: "none" },
+              tabBarButton: () => null,
+              tabBarVisible: false,
+            }}
+            component={NavLogin}
+          />
+
+          {/* headerLeft: () => <Button title="back home" onPress={() => navigation.goBack()} />, */}
           {/* Login */}
           <Tab.Screen
             name="Login"
             options={{
+              headerShown: false,
               tabBarStyle: { display: "none" },
               tabBarButton: () => null,
               tabBarVisible: false,
             }}
             component={Login}
+          />
+
+          {/* Register */}
+          <Tab.Screen
+            name="Register"
+            options={{
+              headerShown: false,
+              tabBarStyle: { display: "none" },
+              tabBarButton: () => null,
+              tabBarVisible: false,
+            }}
+            component={Register}
           />
 
           {/* Home icon */}
@@ -60,28 +95,47 @@ export default function App() {
           />
 
           {/* Post icon */}
-          <Tab.Screen
-            options={{
-              tabBarIcon: ({ color }) => (
-                <View style={styles.tabBarIcon}>
-                  <Image
-                    source={require("./assets/outline/location-med.png")}
-                    resizeMode="contain"
-                    style={styles.imageicon}
-                  />
-                </View>
-              ),
-            }}
-            name="Post"
-            component={Post}
-          />
-          {/* <Tab.Screen name="Post" component={Post} options={{ tabBarIcon: ({size,focused,color}) => { return ( <Image style={{ width: 30, height: 30, tintColor: "gray",}} source={ require("./assets/outline/user.png")}/>);}, }} /> */}
+          {Platform.OS === "ios" ? (
+            <Tab.Screen
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <View style={styles.tabBarIcon}>
+                    <Image
+                      source={require("./assets/outline/location-med.png")}
+                      resizeMode="contain"
+                      style={styles.imageicon}
+                    />
+                  </View>
+                ),
+              }}
+              name="Post"
+              component={Post}
+            />
+          ) : (
+            <Tab.Screen
+              name="Post"
+              component={Post}
+              options={{
+                tabBarIcon: ({ size, focused, color }) => {
+                  return (
+                    <Image
+                      style={{ width: 30, height: 30, tintColor: "#9ef1fe" }}
+                      source={require("./assets/outline/location-med.png")}
+                    />
+                  );
+                },
+              }}
+            />
+          )}
 
           {/* Profile icon */}
           <Tab.Screen
             name="Profile"
             component={Profile}
             options={{
+              headerLeft: () => (
+                <Button title="Sign Out" onPress={() => navigation.goBack()} />
+              ),
               tabBarIcon: ({ size, focused, color }) => {
                 return (
                   <Image
@@ -92,6 +146,7 @@ export default function App() {
               },
             }}
           />
+
           <Screen
             name="EditProfile"
             component={EditProfile}
@@ -129,7 +184,7 @@ const styles = StyleSheet.create({
     justifyContent: "top",
     alignItems: "center",
     borderRadius: 100,
-    backgroundColor: "#FE6D64",
+    backgroundColor: "#9ef1fe",
     paddingTop: 5,
   },
   imageicon: {
