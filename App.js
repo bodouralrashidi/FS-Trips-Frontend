@@ -14,7 +14,7 @@ import { NativeBaseProvider } from 'native-base';
 export default function App() {
   const Tab = createBottomTabNavigator();
 
-  let isSignedIn = authStore.user
+  let isSignedIn = authStore.user;
 
   // const checkForToken = async () => {
   //   isSignedIn = await AsyncStorage.getItem('myToken')
@@ -50,11 +50,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  tabBarIcon:{
+  tabBarIcon: {
     marginTop: 0,
     height: 60,
     width: 60,
@@ -64,9 +64,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#FE6D64",
     paddingTop: 5,
   },
-  imageicon:{
-    width:43,
-    height:43,
-    tintColor:"white",
-  }
+  imageicon: {
+    width: 43,
+    height: 43,
+    tintColor: "white",
+  },
 });

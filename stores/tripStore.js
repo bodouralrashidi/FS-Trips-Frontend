@@ -32,6 +32,15 @@ class TripStore {
     this.setTrips([...this.trips, response.data]);
   };
 
+  fetchtripsUser = async (userId) => {
+    try {
+      const response = await instance.get(`/${userId}`);
+      this.trips = response.data;
+    } catch (error) {
+      console.log("TripsStore -> fetchtripsUser -> error", error);
+    }
+  };
+
   setTrips = (trips) => (this.trips = [...trips]);
 }
 

@@ -1,7 +1,7 @@
-import { makeAutoObservable, observable, action } from 'mobx';
-import instance from './instance';
-import jwt_decode from 'jwt-decode';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { makeAutoObservable, observable, action } from "mobx";
+import instance from "./instance";
+import jwt_decode from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthStore {
   constructor() {
@@ -10,21 +10,25 @@ class AuthStore {
   user = null;
   signup = async (userData) => {
     try {
-      const response = await instance.post('/signup', userData);
+      const response = await instance.post("/signup", userData);
       this.signin(userData);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   signin = async (userData) => {
     try {
-      const response = await instance.post('/signin', userData);
+      const response = await instance.post("/signin", userData);
       this.setUser(response.data);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   setUser = async (token) => {
-    const jsonValue = JSON.stringify(token)
-    await AsyncStorage.setItem('myToken', jsonValue)
+    const jsonValue = JSON.stringify(token);
+    await AsyncStorage.setItem("myToken", jsonValue);
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     const decoded = jwt_decode(token);
     this.user = decoded;
@@ -32,12 +36,12 @@ class AuthStore {
 
   signout = () => {
     delete instance.defaults.headers.common.Authorization;
-    AsyncStorage.removeItem('myToken');
+    AsyncStorage.removeItem("myToken");
     this.user = null;
   };
 
   checkForToken = async () => {
-    const token = await AsyncStorage.getItem('myToken')
+    const token = await AsyncStorage.getItem("myToken");
     if (token) {
       const currentTime = Date.now();
       const user = jwt_decode(token);
