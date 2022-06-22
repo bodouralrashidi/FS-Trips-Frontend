@@ -1,10 +1,10 @@
 import { StyleSheet, View, Image, Button, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Post from "../Post/Post";
+import Post from "../TripPost/TripPost";
 import React from "react";
 import ProfileNavigator from "./ProfileNavigator";
 import HomeNavigator from "./HomeNavigator";
-import PostNavigator from "./PostNavigator";
+import PostNavigator from "./TripPostNavigator";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 

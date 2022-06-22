@@ -1,14 +1,15 @@
-import { Image, Text, StyleSheet, View } from "react-native";
-import { Link } from "@react-navigation/native";
+import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 
-export default function TripItem({ item: trip }) {
+export default function TripItem({ item: trip, navigation }) {
   return (
-    // <Link>
     <View style={styles.card}>
-      <Image style={styles.cardImage} source={{ uri: trip.image }} />
-      <Text style={styles.cardText}>{trip.title}</Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Trip Detail", { id: trip._id })}
+      >
+        <Image style={styles.cardImage} source={{ uri: trip.image }} />
+        <Text style={styles.cardText}>{trip.title}</Text>
+      </TouchableOpacity>
     </View>
-    // </Link>
   );
 }
 
