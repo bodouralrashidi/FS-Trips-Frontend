@@ -15,17 +15,37 @@ import {
 } from "react-native";
 import authStore from "./../../stores/authStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useToast } from 'native-base';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 function Register({ navigation }) {
+  const toast = useToast();
   const [user, setUser] = useState({
     username: "",
     password: "",
     Fname: "",
     Lname: "",
   });
+  let icon
+  const checker = authStore.Users.map((users)=> users.username).some(username => username.toLowerCase() === user.username.toLowerCase());
   const handleSubmit = async () => {
-    await authStore.signup(user);
+    if ((!user.username) || (!user.password) || (!user.Fname)|| (!user.Lname)) {
+      toast.show({
+        description: "Check Your Inputs 😊 ",
+        placement: "top"
+      })
+    }else{
+      await authStore.signup(user);
+    }
+
   };
+  if (checker === true ) {
+    icon =  <Ionicons style={styles.checker} name="close-circle-outline" size={32} color="red" />
+  } else if(checker === false && !user.username) {
+     icon = null
+  }else if(checker === false ){
+    icon = <Ionicons style={styles.checker} name="md-checkmark-circle" size={32} color="green" />
+  }
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -37,28 +57,33 @@ function Register({ navigation }) {
           <TextInput
             placeholder="First Name"
             name="Fname"
-            placeholderTextColor="#fff"
+            placeholderTextColor="#333"
             style={styles.input}
             onChangeText={(Fname) => setUser({ ...user, Fname })}
           />
           <TextInput
             placeholder="Last Name"
             name="Lname"
-            placeholderTextColor="#fff"
+            placeholderTextColor="#333"
             style={styles.input}
             onChangeText={(Lname) => setUser({ ...user, Lname })}
           />
+          <View style={styles.usernameContainer}>
+
           <TextInput
             placeholder="Username"
             name="username"
-            placeholderTextColor="#fff"
-            style={styles.input}
+            placeholderTextColor="#333"
+            style={{...styles.input, marginBottom: 0,
+              marginTop: 0, width:"100%"}}
             onChangeText={(username) => setUser({ ...user, username })}
-          />
+            />
+            {icon}
+            </View>
           <TextInput
             placeholder="Password"
             name="password"
-            placeholderTextColor="#fff"
+            placeholderTextColor="#333"
             onChangeText={(password) => setUser({ ...user, password })}
             style={styles.input}
             secureTextEntry
@@ -69,12 +94,13 @@ function Register({ navigation }) {
           >
             <Text style={styles.appButtonText}>Register</Text>
           </TouchableOpacity>
-          <Image
+
+        </View>
+      </TouchableWithoutFeedback>
+      <Image
             style={styles.gitImage}
             source={require("./../../assets/Welcome/XTEC.gif")}
           />
-        </View>
-      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 }
@@ -98,12 +124,14 @@ const styles = StyleSheet.create({
     // position: "absolute",
     // bottom: 0,
     width: "100%",
+    position:"absolute",
+    bottom:0,
     height: 190,
     resizeMode: "stretch",
   },
   appButtonText: {
     fontSize: 16,
-    color: "#9ef3ff",
+    color: "#333",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase",
@@ -143,5 +171,17 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontWeight: "bold",
   },
+  usernameContainer:{
+    position: "relative",
+    marginBottom: -30,
+    marginTop: 50,
+    width: "80%",
+    height: 44,
+  },
+  checker:{
+    position:"absolute",
+    top: 5,
+    right:5,
+  }
 });
 export default observer(Register);

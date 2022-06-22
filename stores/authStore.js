@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthStore {
   user = null;
+  users = [];
   constructor() {
     makeAutoObservable(this);
   }
@@ -16,7 +17,7 @@ class AuthStore {
       const jsonValue = JSON.stringify(decoded);
       await AsyncStorage.setItem("myToken", jsonValue);
       instance.defaults.headers.common.Authorization = `Bearer ${response.data}`;
-      this.user = decoded;
+      runInAction(() => (this.user = decoded));
     } catch (error) {
       console.log("signup", error);
     }
@@ -44,10 +45,10 @@ class AuthStore {
     AsyncStorage.removeItem("myToken");
     this.user = null;
   };
-
   checkForToken = async () => {
     try {
       const token = await AsyncStorage.getItem("myToken");
+      // const token = storageToken ? JSON.parse(storageToken) : null;
       if (token) {
         const currentTime = Date.now();
         const user = jwt_decode(token);
@@ -61,8 +62,18 @@ class AuthStore {
       console.log(error);
     }
   };
+
+  fetchUsers = async () => {
+    try {
+      const response = await instance.get("/users");
+      this.Users = response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 const authStore = new AuthStore();
 authStore.checkForToken();
+authStore.fetchUsers();
 export default authStore;
