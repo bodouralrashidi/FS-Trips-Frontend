@@ -1,4 +1,4 @@
-import { makeAutoObservable, observable, action } from "mobx";
+import { makeAutoObservable, observable, action, runInAction } from "mobx";
 import instance from "./instance";
 import jwt_decode from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -12,14 +12,14 @@ class AuthStore {
 
   signup = async (userData) => {
     try {
-      const response = await instance.post('/signup', userData);
+      const response = await instance.post("/signup", userData);
       const decoded = jwt_decode(response.data);
       const jsonValue = JSON.stringify(decoded);
-      await AsyncStorage.setItem('myToken', jsonValue);
+      await AsyncStorage.setItem("myToken", jsonValue);
       instance.defaults.headers.common.Authorization = `Bearer ${response.data}`;
-      this.user = decoded;
+      runInAction(() => (this.user = decoded));
     } catch (error) {
-      console.log("signup",error)
+      console.log("signup", error);
     }
   };
 
@@ -28,8 +28,7 @@ class AuthStore {
       const response = await instance.post("/signin", userData);
       this.setUser(response.data);
     } catch (error) {
-      console.log("signin",error)
-      AsyncStorage.removeItem("myToken");
+      console.log("signin", error);
     }
   };
 
@@ -38,7 +37,7 @@ class AuthStore {
     await AsyncStorage.setItem("myToken", jsonValue);
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     const decoded = jwt_decode(token);
-    this.user = decoded;
+    runInAction(() => (this.user = decoded));
   };
 
   signout = () => {
@@ -47,15 +46,20 @@ class AuthStore {
     this.user = null;
   };
   checkForToken = async () => {
-    const token = await AsyncStorage.getItem("myToken");
-    if (token) {
-      const currentTime = Date.now();
-      const user = jwt_decode(token);
-      if (user.exp >= currentTime) {
-        this.setUser(token);
-      } else {
-        this.signout();
+    try {
+      const token = await AsyncStorage.getItem("myToken");
+      // const token = storageToken ? JSON.parse(storageToken) : null;
+      if (token) {
+        const currentTime = Date.now();
+        const user = jwt_decode(token);
+        if (user.exp >= currentTime) {
+          this.setUser(token);
+        } else {
+          this.signout();
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   };
 

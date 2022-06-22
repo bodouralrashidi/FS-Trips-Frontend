@@ -10,14 +10,21 @@ import { Formik } from "formik";
 import React from "react";
 import tripStore from "../../stores/tripStore";
 
-const TripForm = ({ closeModal }) => {
-  const initialValues = tripStore.emptyTrip;
+const TripForm = ({ trip, navigation }) => {
+  const isNew = !trip;
+  const initialValues = isNew ? tripStore.emptyTrip : trip;
+
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={async (values, actions) => {
-        await tripStore.addTrip(values);
-        closeModal();
+        if (isNew) {
+          await tripStore.addTrip(values);
+          actions.resetForm();
+        } else {
+          await tripStore.updateTrip(values);
+          navigation.goBack();
+        }
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -56,7 +63,7 @@ const TripForm = ({ closeModal }) => {
           </ScrollView>
           <View style={styles.spacer}></View>
           <TouchableOpacity onPress={handleSubmit}>
-            <Text style={styles.submitButton}>ADD</Text>
+            <Text style={styles.submitButton}>{isNew ? "ADD" : "UPDATE"}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -84,7 +91,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 16,
     borderRadius: 30,
-    overflow:"hidden",
+    overflow: "hidden",
     color: "white",
     fontWeight: "bold",
     backgroundColor: "hsl(174, 62%, 47%)",
