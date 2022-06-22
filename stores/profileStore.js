@@ -1,51 +1,20 @@
 import { makeAutoObservable } from "mobx";
 import instance from "./instance";
-
 class ProfileStore {
   constructor() {
     makeAutoObservable(this);
   }
   Profile = [];
   CurrentUser = {};
-  createProfile = async (categoryId, newProfile) => {
-    try {
-      console.log(categoryId, " store: ProfileId");
-      const response = await instance.post(
-        `/${categoryId}/Profile`,
-        newProfile
-      );
-      console.log(response.data, " store: response.data");
-      this.Profile.push(response.data);
-    } catch (error) {
-      console.log(
-        "🚀 ~ file: Profilestore.js ~ line 16 ",
-        error
-      );
-    }
-  };
-
+Profile ={}
   fetchProfile = async () => {
     try {
-      const response = await instance.get("/Profile");
+      const response = await instance.get("/profiles");
       this.Profile = response.data;
     } catch (error) {
       console.log("Profiletore-> fetchProfile-> error", error);
     }
   };
-
-  // updateProfile = async (updatedProfile, ProfileId, ingredientId) => {
-  //   try {
-  //     const res = await instance.put(
-  //       `/${ProfileId}/ingredients/${ingredientId}`,
-  //       updatedProfile
-  //     );
-  //     this.Profile = this.Profile.map((Profile) =>
-  //       Profile._id === ProfileId ? res.data : Profile
-  //     );
-  //   } catch (error) {
-  //     console.log("Profiletore-> updatedProfile-> error", error);
-  //   }
-  // };
 
   findProfileName = (ProfileId) => {
     const Profile = this.Profile?.find((Profile) => ProfileId === Profile?._id);
@@ -53,27 +22,12 @@ class ProfileStore {
     return Profile;
   };
 
-  updateingredient = async (ProfileId, ingredientId) => {
+  updateProfile = async (updatedProfile,updateUser ,userId) => {
     try {
-      const res = await instance.put(
-        `/${ProfileId}/ingredients/${ingredientId}`
-      );
-      this.Profile = this.Profile.map((Profile) =>
-        Profile._id === ProfileId ? res.data : Profile
-      );
-    } catch (error) {
-      console.log("Profiletore-> updatedProfile-> error", error);
-    }
-  };
-
-  updateProfile = async (updatedProfile, ProfileId) => {
-    try {
-      console.log(ProfileId, updatedProfile, "update /////");
-      const res = await instance.put(`/${ProfileId}`, updatedProfile);
-      console.log(res, "resssponse");
-      this.Profile = this.Profile.map((Profile) =>
-        Profile._id === ProfileId ? res.data : Profile
-      );
+      console.log(updateUser, "updated/////");
+       const res2 = await instance.put(`/user/${userId}`, updateUser);
+      const res = await instance.put(`/${userId}`, updatedProfile);
+     
     } catch (error) {
       console.log("Profiletore-> updatedProfile-> error", error);
     }
@@ -96,10 +50,10 @@ class ProfileStore {
   };
 }
 
-const profileStore = new ProfileStore();
-profileStore.fetchProfile();
-// It will only call this function when the app first starts
 
-export default ProfileStore;
+const profileStore = new ProfileStore();
+profileStore.fetchProfile
+// It will only call this function when the app first starts
+export default profileStore;
 
 

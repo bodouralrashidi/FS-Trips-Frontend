@@ -11,7 +11,7 @@ const ProfileNavigator = () => {
     <Navigator>
       <Screen
         name="Profile"
-        component={Profile}
+        component={EditProfile}
         options={{
           headerLeft: () => (
             <Button title="Sign Out" onPress={() => authStore.signout()} />

@@ -1,5 +1,5 @@
-import React from "react";
-
+import ProfileStore from "../../stores/profileStore";
+import React  from "react";
 import {
   Button,
   Container,
@@ -15,9 +15,24 @@ import {
   Text,
 } from "react-native";
 export default function EditProfile({ navigation }) {
-  const image =
-    "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg";
-  const [textFieldValue, setTextFieldValue] = React.useState(undefined);
+
+  const [EditProfile, setEditProfile] = React.useState({
+    bio: "",
+    image: "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg",
+  });
+  const [Edituser, setEdituser] = React.useState({
+    Fname: "",
+    Lname: "",
+  });
+ 
+  const handlesubmit =(event)=>
+  { 
+  console.log(EditProfile)
+    ProfileStore.updateProfile(EditProfile,Edituser,"62b30042d239ee9752f71166")
+   
+
+  }
+ 
   return (
     <ScreenContainer scrollable={true} hasSafeArea={true}>
       <KeyboardAvoidingView
@@ -38,31 +53,39 @@ export default function EditProfile({ navigation }) {
             Since this is your first time, we just need some basic information
             to get you started.
           </Text>
-
           <Image
             style={StyleSheet.flatten([styles.imageSq])}
             resizeMode="cover"
             source={{
-              uri: image,
+              uri: EditProfile.image,
             }}
           />
           <TextField
             style={styles.textFieldK7}
             type="underline"
-            label="Name"
+            label="First Name"
+            name="First Name"
             keyboardType="default"
             leftIconMode="inset"
-            value={textFieldValue}
-            onChangeText={(textFieldValue) => setTextFieldValue(textFieldValue)}
+            onChangeText={(Fname) => setEdituser({ ...Edituser, Fname })}
+          />
+            <TextField
+            style={styles.textFieldK7}
+            type="underline"
+            label="Last Name"
+            name="Last Name"
+            keyboardType="default"
+            leftIconMode="inset"
+            onChangeText={(Lname) => setEdituser({ ...Edituser, Lname })}
           />
           <TextField
             style={styles.textField8U}
             type="underline"
-            label="Title"
+            label="Bio"
+            name = "bio"
             keyboardType="default"
             leftIconMode="inset"
-            value={textFieldValue}
-            onChangeText={(textFieldValue) => setTextFieldValue(textFieldValue)}
+            onChangeText={(bio) => setEditProfile({ ...EditProfile, bio })}
           />
         </Container>
         <Container
@@ -70,8 +93,8 @@ export default function EditProfile({ navigation }) {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Button style={styles.buttonUf} type="solid">
-            edit{" "}
+          <Button style={styles.buttonUf} type="solid"onPress = {handlesubmit}>
+        Done
           </Button>
         </Container>
       </KeyboardAvoidingView>
