@@ -16,7 +16,7 @@ class AuthStore {
       const jsonValue = JSON.stringify(decoded);
       await AsyncStorage.setItem("myToken", jsonValue);
       instance.defaults.headers.common.Authorization = `Bearer ${response.data}`;
-      this.user = decoded;
+      runInAction(() => (this.user = decoded));
     } catch (error) {
       console.log("signup", error);
     }
@@ -47,7 +47,8 @@ class AuthStore {
 
   checkForToken = async () => {
     try {
-      const token = await AsyncStorage.getItem("myToken");
+      const storageToken = await AsyncStorage.getItem("myToken");
+      const token = storageToken ? JSON.parse(storageToken) : null;
       if (token) {
         const currentTime = Date.now();
         const user = jwt_decode(token);

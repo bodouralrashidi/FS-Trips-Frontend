@@ -11,6 +11,8 @@ class TripStore {
 
   trips = [];
 
+  singleTrip;
+
   emptyTrip = {
     title: "",
     description: "",
@@ -31,6 +33,31 @@ class TripStore {
     if (error) return console.error(error);
     this.setTrips([...this.trips, response.data]);
   };
+
+  updateTrip = async (trip) => {
+    const [response, error] = await tryCatch(() =>
+      instance.put(`${baseURL}/${trip._id}`, trip)
+    );
+    if (error) return console.error(error);
+    const updatedTrip = response.data;
+    this.setTrips(
+      this.trips.map((trip) =>
+        trip._id === updatedTrip._id ? updatedTrip : trip
+      )
+    );
+    this.setSingleTripWithId(updatedTrip._id);
+  };
+
+  deleteTrip = async (id) => {
+    const [response, error] = await tryCatch(() =>
+      instance.delete(`${baseURL}/${id}`)
+    );
+    if (error) return console.error(error);
+    this.setTrips(this.trips.filter((trip) => trip._id !== id));
+  };
+
+  setSingleTripWithId = (id) =>
+    (this.singleTrip = this.trips.find(({ _id }) => _id === id));
 
   fetchtripsUser = async (userId) => {
     try {
