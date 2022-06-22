@@ -22,6 +22,7 @@ export default function App() {
   // checkForToken()
 
   return (
+    <NativeBaseProvider>
     <NavigationContainer>
      <Tab.Navigator initialRouteName="NavLogin" screenOptions={{ "tabBarShowLabel": false, "tabBarStyle": [{"display": "flex"},null] }}>
       
@@ -49,6 +50,7 @@ export default function App() {
       {/* Profile icon */}
     </Tab.Navigator>
     </NavigationContainer>
+    </NativeBaseProvider>
   );
 }
 

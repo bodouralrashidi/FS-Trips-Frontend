@@ -1,22 +1,40 @@
 import * as React from 'react';
 import {useState} from 'react';
 import { observer } from 'mobx-react';
+import { useToast } from 'native-base';
 import { StyleSheet,TouchableOpacity, TextInput, Text, View, Image, Platform, TouchableWithoutFeedback,KeyboardAvoidingView,Keyboard} from 'react-native';
 import authStore from './../../stores/authStore'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Ionicons from '@expo/vector-icons/Ionicons';
 function Register({ navigation }) {
+  const toast = useToast();
   const [user, setUser] = useState({
     username: "",
     password: "",
     Fname: "",
     Lname: "",
   });
+  let icon
+  const checker = authStore.Users.map((users)=> users.username).some(username => username.toLowerCase() === user.username.toLowerCase());
   const handleSubmit = async () => {
-    await authStore.signup(user);
-    const token = await AsyncStorage.getItem('myToken');
-    if (token) navigation.navigate('Home');
+    if ((!user.username) || (!user.password) || (!user.Fname)|| (!user.Lname)) {
+      toast.show({
+        description: "Check Your Inputs 😊 "
+      })
+    }else{
+      await authStore.signup(user);
+      const token = await AsyncStorage.getItem('myToken');
+      if (token) navigation.navigate('Home');
+    }
+
   };
+  if (checker === true ) {
+    icon =  <Ionicons style={styles.checker} name="close-circle-outline" size={32} color="red" />
+  } else if(checker === false && !user.username) {
+     icon = null
+  }else if(checker === false ){
+    icon = <Ionicons style={styles.checker} name="md-checkmark-circle" size={32} color="green" />
+  }
   return (
     <KeyboardAvoidingView
     behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -42,6 +60,7 @@ function Register({ navigation }) {
         style={styles.input}
         onChangeText={(Lname) => setUser({ ...user, Lname })}
       />
+      {icon}
       <TextInput
         placeholder="Username"
         name="username"
@@ -57,7 +76,7 @@ function Register({ navigation }) {
         style={styles.input}
         secureTextEntry
       />
-      <TouchableOpacity onPress={handleSubmit} style={styles.appButtonContainer}>
+      <TouchableOpacity disabled={checker} onPress={handleSubmit} style={styles.appButtonContainer}>
         <Text style={styles.appButtonText}>Register</Text>
     </TouchableOpacity>
     </View>
@@ -130,6 +149,11 @@ GetAway:{
   color:"#fff",
   textTransform: "uppercase",
   fontWeight: "bold",
-}
+},
+checker:{
+  position:"absolute",
+  top:360,
+  right:50,
+},
 });
 export default observer(Register)

@@ -4,18 +4,25 @@ import {useState} from 'react';
 import { StyleSheet,TouchableOpacity, TextInput, Text, View, Button,Image, Platform, TouchableWithoutFeedback,KeyboardAvoidingView,Keyboard} from 'react-native';
 import authStore from './../../stores/authStore'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {  useToast } from 'native-base';
 function Login({ navigation }) {
+  const toast = useToast();
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
   
   const handleSubmit = async () => {
+    if ((!user.username) || (!user.password)) {
+      toast.show({
+        description: "Check Your Inputs 😊 "
+      })
+    }else{
     await authStore.signin(user);
     const token = await AsyncStorage.getItem('myToken')
-    if (token) navigation.navigate('Home');
-    
+    if (token) toast.show({description: "Welcome 😄"}) , navigation.navigate('Home')
+    if(!token) toast.show({description: "❌"})
+  }
   };
   return (
     <KeyboardAvoidingView
@@ -47,11 +54,11 @@ function Login({ navigation }) {
       />
       <TouchableOpacity onPress={handleSubmit} style={styles.appButtonContainer}>
         <Text style={styles.appButtonText}>Login</Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={()=>(navigation.navigate('Register'))}>
+    </TouchableOpacity>  
+
+    {/* <TouchableOpacity onPress={()=>(navigation.navigate('Register'))}>
         <Text style={styles.registerText}>Haven't Registerd yet, Join Now</Text>
-    </TouchableOpacity>
-       
+    </TouchableOpacity> */}
     </View>
     </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
