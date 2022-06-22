@@ -16,14 +16,30 @@ import {
 } from "react-native";
 import authStore from "./../../stores/authStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {  useToast } from 'native-base';
 
 function Login({ navigation }) {
+  const toast = useToast();
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
+  
+  const handleSubmit = async () => {
+    if ((!user.username) || (!user.password)) {
+      toast.show({
+        description: "Check Your Inputs 😊 "
+      })
+    }else{
+    await authStore.signin(user);
+   const token=  await AsyncStorage.getItem("myToken")
+    if (token) toast.show({description: "Welcome 😄"})
+    if (!token)  toast.show({description: "❌"})
+  }
+  };
 
-  const handleSubmit = async () => await authStore.signin(user);
+   
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
