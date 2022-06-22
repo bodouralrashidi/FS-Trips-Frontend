@@ -31,7 +31,8 @@ function Register({ navigation }) {
   const handleSubmit = async () => {
     if ((!user.username) || (!user.password) || (!user.Fname)|| (!user.Lname)) {
       toast.show({
-        description: "Check Your Inputs 😊 "
+        description: "Check Your Inputs 😊 ",
+        placement: "top"
       })
     }else{
       await authStore.signup(user);
@@ -56,14 +57,14 @@ function Register({ navigation }) {
           <TextInput
             placeholder="First Name"
             name="Fname"
-            placeholderTextColor="#fff"
+            placeholderTextColor="#333"
             style={styles.input}
             onChangeText={(Fname) => setUser({ ...user, Fname })}
           />
           <TextInput
             placeholder="Last Name"
             name="Lname"
-            placeholderTextColor="#fff"
+            placeholderTextColor="#333"
             style={styles.input}
             onChangeText={(Lname) => setUser({ ...user, Lname })}
           />
@@ -72,7 +73,7 @@ function Register({ navigation }) {
           <TextInput
             placeholder="Username"
             name="username"
-            placeholderTextColor="#fff"
+            placeholderTextColor="#333"
             style={{...styles.input, marginBottom: 0,
               marginTop: 0, width:"100%"}}
             onChangeText={(username) => setUser({ ...user, username })}
@@ -82,7 +83,7 @@ function Register({ navigation }) {
           <TextInput
             placeholder="Password"
             name="password"
-            placeholderTextColor="#fff"
+            placeholderTextColor="#333"
             onChangeText={(password) => setUser({ ...user, password })}
             style={styles.input}
             secureTextEntry
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
   },
   appButtonText: {
     fontSize: 16,
-    color: "#9ef3ff",
+    color: "#333",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase",

@@ -28,13 +28,14 @@ function Login({ navigation }) {
   const handleSubmit = async () => {
     if ((!user.username) || (!user.password)) {
       toast.show({
-        description: "Check Your Inputs 😊 "
+        description: "Check Your Inputs 😊 ",
+        placement: "top"
       })
     }else{
     await authStore.signin(user);
    const token=  await AsyncStorage.getItem("myToken")
-    if (token) toast.show({description: "Welcome 😄"})
-    if (!token)  toast.show({description: "❌"})
+    if (token) toast.show({description: "Welcome 😄",placement: "top"})
+    if (!token)  toast.show({description: "❌",placement: "top"})
   }
   };
 
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
   },
   appButtonContainer: {
     elevation: 8,
-    backgroundColor: "#97e5f1",
+    backgroundColor: "hsl(224, 53%, 40%)" ,
     borderRadius: 100,
     paddingVertical: 15,
     width: 180,
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
   },
   appButtonText: {
     fontSize: 16,
-    color: "#fff",
+    color: "#97e5f1",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase",
@@ -127,16 +128,13 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   Image: {
-    position: "absolute",
     marginTop: 100,
-    marginBottom: 10,
     resizeMode: "contain",
     width: "70%",
     height: "30%",
   },
   WelcomeText: {
     fontSize: 25,
-    marginTop: 220,
     color: "#5f6368",
     fontWeight: "bold",
     alignSelf: "center",
