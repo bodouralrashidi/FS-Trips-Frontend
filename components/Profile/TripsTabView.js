@@ -6,11 +6,17 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+import { useEffect } from "react";
 import profileStore from "../../stores/profileStore";
 import tripStore from "../../stores/tripStore";
 import authStore from "../../stores/authStore";
-export default function TripsTabView() {
- tripStore.fetchtripsUser(authStore.user._id);
+import { observer } from "mobx-react";
+
+function TripsTabView() {
+  useEffect(() => {
+    tripStore.fetchtripsUser(authStore.user._id);
+  }, []);
+
   const trips = tripStore.UserTrips;
 
   const text = "island";
@@ -84,3 +90,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+export default observer(TripsTabView);

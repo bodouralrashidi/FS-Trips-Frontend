@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import instance from "./instance";
 
 const baseURL = "/api/trip";
@@ -63,10 +63,9 @@ class TripStore {
   fetchtripsUser = async (userId) => {
     try {
       const response = await instance.get(`/${userId}`);
-      this.UserTrips = response.data.trips
-      console.log(this.UserTrips, "userrrrrr tripps");
+      runInAction(() => (this.UserTrips = response.data.trips));
     } catch (error) {
-      console.log("TripsStore -> fetchtripsUser -> error", error);
+      console.log(error);
     }
   };
 
