@@ -11,7 +11,7 @@ const HomeNavigator = () => {
     <Navigator>
       {/* Home icon */}
       <Screen name="Home" component={Home} />
-      <Screen name="Trip Detail" component={TripDetail} />
+      <Screen options={{headerShown:false}} name="Trip Detail" component={TripDetail} />
       <Screen name="Edit Trip" component={TripPost} />
     </Navigator>
   );
