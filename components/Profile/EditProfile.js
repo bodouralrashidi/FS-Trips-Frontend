@@ -1,5 +1,6 @@
 import ProfileStore from "../../stores/profileStore";
-import React  from "react";
+import React from "react";
+import authStore from "../../stores/authStore";
 import {
   Button,
   Container,
@@ -15,24 +16,25 @@ import {
   Text,
 } from "react-native";
 export default function EditProfile({ navigation }) {
-
   const [EditProfile, setEditProfile] = React.useState({
     bio: "",
-    image: "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg",
+    image:
+      "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg",
   });
   const [Edituser, setEdituser] = React.useState({
     Fname: "",
     Lname: "",
   });
- 
-  const handlesubmit =(event)=>
-  { 
-  console.log(EditProfile)
-    ProfileStore.updateProfile(EditProfile,Edituser,"62b30042d239ee9752f71166")
-   
 
-  }
- 
+  const handlesubmit = (event) => {
+    console.log(EditProfile);
+    ProfileStore.updateProfile(
+      EditProfile,
+      Edituser,
+     authStore.user._id
+    );
+  };
+
   return (
     <ScreenContainer scrollable={true} hasSafeArea={true}>
       <KeyboardAvoidingView
@@ -69,7 +71,7 @@ export default function EditProfile({ navigation }) {
             leftIconMode="inset"
             onChangeText={(Fname) => setEdituser({ ...Edituser, Fname })}
           />
-            <TextField
+          <TextField
             style={styles.textFieldK7}
             type="underline"
             label="Last Name"
@@ -82,7 +84,7 @@ export default function EditProfile({ navigation }) {
             style={styles.textField8U}
             type="underline"
             label="Bio"
-            name = "bio"
+            name="bio"
             keyboardType="default"
             leftIconMode="inset"
             onChangeText={(bio) => setEditProfile({ ...EditProfile, bio })}
@@ -93,8 +95,8 @@ export default function EditProfile({ navigation }) {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Button style={styles.buttonUf} type="solid"onPress = {handlesubmit}>
-        Done
+          <Button style={styles.buttonUf} type="solid" onPress={handlesubmit}>
+            Done
           </Button>
         </Container>
       </KeyboardAvoidingView>

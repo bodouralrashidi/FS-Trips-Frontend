@@ -10,7 +10,7 @@ class TripStore {
   }
 
   trips = [];
-UserTrips = []
+  UserTrips = [];
   emptyTrip = {
     title: "",
     description: "",
@@ -35,7 +35,8 @@ UserTrips = []
   fetchtripsUser = async (userId) => {
     try {
       const response = await instance.get(`/${userId}`);
-      this.UserTrips = response.data.trips;
+      this.UserTrips = response.data.trips
+      console.log(this.UserTrips, "userrrrrr tripps");
     } catch (error) {
       console.log("TripsStore -> fetchtripsUser -> error", error);
     }
