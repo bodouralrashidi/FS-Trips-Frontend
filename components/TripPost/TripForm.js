@@ -10,11 +10,23 @@ import { Formik } from "formik";
 import React from "react";
 import {  useToast } from 'native-base';
 import tripStore from "../../stores/tripStore";
+import authStore from "../../stores/authStore";
 
 const TripForm = ({ trip, navigation }) => {
   const toast = useToast();
   const isNew = !trip;
   const initialValues = isNew ? tripStore.emptyTrip : trip;
+
+  const onSubmit = async (values, actions) => {
+    if (isNew) {
+      const userId = authStore.user._id;
+      await tripStore.addTrip({ ...values, userId });
+      actions.resetForm();
+    } else {
+      await tripStore.updateTrip(values);
+      navigation.goBack();
+    }
+  };
 
   return (
     <Formik

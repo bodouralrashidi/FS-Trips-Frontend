@@ -3,7 +3,14 @@ import { StatusBar } from "expo-status-bar";
 import { observer } from "mobx-react";
 import { useLayoutEffect } from "react";
 import authStore from "./../../stores/authStore";
-import { StyleSheet, Text, View, Image, TouchableOpacity,ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import tripStore from "../../stores/tripStore";
 import { Feather } from "@expo/vector-icons";
 import { AlertDialog,Menu,Box,Pressable,HamburgerIcon,Avatar} from "native-base";
@@ -53,18 +60,25 @@ function TripDetail({ route, navigation }) {
   if(authStore.user._id === trip.userId )deleteButton =  Hamburger
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: trip.title
+      title: trip.title,
     });
   }, [trip.title]);
 
   if (!trip) return <Text>Loading</Text>;
   return (
     <View style={styles.container}>
-
       {/* Find User Button */}
-      <TouchableOpacity onPress={() => {navigation.navigate("Profile", trip.userId )}} style={styles.informationContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Profile", trip.userId);
+        }}
+        style={styles.informationContainer}
+      >
         <View style={styles.avatarContainer}>
-           <Image style={styles.avatar} source={ require("./../../assets/outline/user.png")}/>
+          <Image
+            style={styles.avatar}
+            source={require("./../../assets/outline/user.png")}
+          />
         </View>
         <Text style={styles.usernamePost}  >{`${Fname} ${Lname}`}</Text>
     </TouchableOpacity>
@@ -165,31 +179,31 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textTransform: "uppercase",
   },
-  editbutton:{
-    position:'absolute',
-    top:60,
+  editbutton: {
+    position: "absolute",
+    top: 60,
     right: 20,
-    zIndex:1,
+    zIndex: 1,
   },
-  edit:{
-    width:24,
-    height:24,
+  edit: {
+    width: 24,
+    height: 24,
     ...Platform.select({
       ios: {
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.8,
-          shadowRadius: 2,    
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
       },
       android: {
-          elevation: 5,
+        elevation: 5,
       },
-      }),
+    }),
   },
-  pin:{
-    tintColor:"red",
-    width:24,
-    height:24,
+  pin: {
+    tintColor: "red",
+    width: 24,
+    height: 24,
   },
   mapIcon:{
     tintColor:"black",
@@ -200,41 +214,41 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     alignItems:"center",
   },
-  containerSecond:{
-    padding:10,
+  containerSecond: {
+    padding: 10,
   },
-  avatar:{
-    tintColor:"white",
-    width:30,
-    height:30,
+  avatar: {
+    tintColor: "white",
+    width: 30,
+    height: 30,
     // transform: [{ rotate: '90deg'}]
     // top:80,
     // left: 20,
     // zIndex:1,
   },
-  avatarContainer:{
-    justifyContent: 'center',
-    alignItems: 'center',
-    width:40,
-    height:40,
-    backgroundColor:"#333",
-    borderRadius:50,
+  avatarContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 40,
+    height: 40,
+    backgroundColor: "#333",
+    borderRadius: 50,
     ...Platform.select({
       ios: {
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.8,
-          shadowRadius: 2,    
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
       },
       android: {
-          elevation: 5,
+        elevation: 5,
       },
-      }),
+    }),
   },
-  informationContainer:{
-    backgroundColor:"#fff",
-    position:'absolute',
-    top:250,
+  informationContainer: {
+    backgroundColor: "#fff",
+    position: "absolute",
+    top: 250,
     left: 20,
     width:180,
     zIndex:1,

@@ -14,25 +14,40 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
+  Alert,
 } from "react-native";
-export default function EditProfile({ navigation }) {
+export default function EditProfile({ route, navigation }) {
+  const user = route.params.user;
+  const profile = route.params.profile;
+  const bio = profile?.bio ?? "";
+  const image =
+    profile?.image ??
+    "https://www.jennybeaumont.com/wp-content/uploads/2015/03/placeholder.gif";
+  const Fname = user?.Fname ?? "";
+  const Lname = user?.Lname ?? "";
+
   const [EditProfile, setEditProfile] = React.useState({
-    bio: "",
-    image:
-      "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg",
+    bio,
+    image,
   });
   const [Edituser, setEdituser] = React.useState({
-    Fname: "",
-    Lname: "",
+    Fname,
+    Lname,
   });
-
+  const createTwoButtonAlert = () =>
+    Alert.alert("Confirmation ", "do you want to save changes", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: handlesubmit },
+    ]);
   const handlesubmit = (event) => {
     console.log(EditProfile);
-    ProfileStore.updateProfile(
-      EditProfile,
-      Edituser,
-     authStore.user._id
-    );
+    ProfileStore.updateProfile(EditProfile, Edituser, authStore.user._id);
+    navigation.navigate("Profile");
   };
 
   return (
@@ -48,13 +63,10 @@ export default function EditProfile({ navigation }) {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text style={StyleSheet.flatten([styles.textEa, { color: "black" }])}>
+          <Text style={StyleSheet.flatten([styles.textEa, { color: "black" , fontWeight: "bold"}])}>
             Create Your Profile
           </Text>
-          <Text style={StyleSheet.flatten([styles.textUm, { color: "black" }])}>
-            Since this is your first time, we just need some basic information
-            to get you started.
-          </Text>
+        
           <Image
             style={StyleSheet.flatten([styles.imageSq])}
             resizeMode="cover"
@@ -67,6 +79,8 @@ export default function EditProfile({ navigation }) {
             type="underline"
             label="First Name"
             name="First Name"
+           
+            value={Edituser.Fname}
             keyboardType="default"
             leftIconMode="inset"
             onChangeText={(Fname) => setEdituser({ ...Edituser, Fname })}
@@ -76,15 +90,28 @@ export default function EditProfile({ navigation }) {
             type="underline"
             label="Last Name"
             name="Last Name"
+            value={Edituser.Lname}
             keyboardType="default"
             leftIconMode="inset"
             onChangeText={(Lname) => setEdituser({ ...Edituser, Lname })}
+          />
+          <TextField
+            style={styles.textFieldK7}
+            type="underline"
+            label="image"
+            name="image"
+            value={EditProfile.image}
+            keyboardType="default"
+            leftIconMode="inset"
+            onChangeText={(image) => setEditProfile({ ...EditProfile, image })}
           />
           <TextField
             style={styles.textField8U}
             type="underline"
             label="Bio"
             name="bio"
+            maxLength={200}
+            value={EditProfile.bio}
             keyboardType="default"
             leftIconMode="inset"
             onChangeText={(bio) => setEditProfile({ ...EditProfile, bio })}
@@ -95,9 +122,12 @@ export default function EditProfile({ navigation }) {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Button style={styles.buttonUf} type="solid" onPress={handlesubmit}>
-            Done
-          </Button>
+          <TouchableOpacity
+            style={styles.appButtonContainer}
+            onPress={createTwoButtonAlert}
+          >
+            <Text style={styles.appButtonText}>Done</Text>
+          </TouchableOpacity>
         </Container>
       </KeyboardAvoidingView>
     </ScreenContainer>
@@ -134,11 +164,47 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   textFieldK7: {
-    height: 82,
+    height: 50,
     marginTop: 16,
+    borderWidth: 2,
+    borderColor: "#97e5f1",
   },
   textField8U: {
-    height: 82,
+    height: 100,
     marginTop: 16,
+    borderWidth: 2,
+    borderColor: "#97e5f1",
+  },
+  appButtonContainer: {
+    marginTop: 40,
+    backgroundColor: "#97e5f1",
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 200,
+    height: 40,
+    marginBottom: 5,
+  },
+  appButtonText: {
+    fontSize: 14,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
+  center: {
+    paddingLeft: 30,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    input: {
+      width: "80%",
+      height: 44,
+      padding: 10,
+      borderWidth: 1,
+      borderRadius: 20,
+      borderColor: "#5f6368",
+      marginBottom: -30,
+      marginTop: 50,
+    },
   },
 });

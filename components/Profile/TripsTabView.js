@@ -6,27 +6,11 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { useEffect } from "react";
-import profileStore from "../../stores/profileStore";
-import tripStore from "../../stores/tripStore";
-import authStore from "../../stores/authStore";
-import { observer } from "mobx-react";
 
-function TripsTabView() {
-  useEffect(() => {
-    tripStore.fetchtripsUser(authStore.user._id);
-  }, []);
-
-  const trips = tripStore.UserTrips;
-
-  const text = "island";
+function TripsTabView({ trips }) {
   function renderTrips({ item: trip }) {
     return (
-      <TouchableOpacity
-        style={{
-          padding: 10,
-        }}
-      >
+      <TouchableOpacity>
         <View style={styles.container}>
           <Image
             style={styles.image}
@@ -34,7 +18,6 @@ function TripsTabView() {
               uri: trip.image,
             }}
           />
-
           <View style={styles.textContainer}>
             <Text style={styles.text}>{trip.title}</Text>
           </View>
@@ -42,29 +25,31 @@ function TripsTabView() {
       </TouchableOpacity>
     );
   }
-
-  ("http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg");
+  if (trips.length === 0)
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No posts</Text>
+      </View>
+    );
   return (
-    <View style={styles.box}>
-      <FlatList
-        data={trips}
-        renderItem={renderTrips}
-        keyExtractor={(item) => item._id}
-      />
-    </View>
+    <FlatList
+      data={trips.slice()}
+      extraData={trips}
+      renderItem={renderTrips}
+      numColumns={2}
+      columnWrapperStyle={styles.flatListColumns}
+      keyExtractor={(item) => item._id}
+      contentContainerStyle={styles.box}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  box: {
-    marginHorizontal: 10,
-    alignItems: "center",
+  flatListColumns: {
+    paddingTop: 10,
+    paddingHorizontal: 20,
     justifyContent: "space-between",
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
   },
-
   container: {
     width: 150,
     height: 200,
@@ -91,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default observer(TripsTabView);
+export default TripsTabView;
