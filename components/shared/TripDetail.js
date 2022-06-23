@@ -2,9 +2,11 @@ import { Container } from "@draftbit/ui";
 import { StatusBar } from "expo-status-bar";
 import { observer } from "mobx-react";
 import { useLayoutEffect } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import authStore from "./../../stores/authStore";
+import { StyleSheet, Text, View, Image, TouchableOpacity,ScrollView } from "react-native";
 import tripStore from "../../stores/tripStore";
 import { Feather } from "@expo/vector-icons";
+import { AlertDialog,Menu,Box,Pressable,HamburgerIcon,Avatar} from "native-base";
 import Ionicons from '@expo/vector-icons/Ionicons';
 function TripDetail({ route, navigation }) {
   const { id } = route.params;
@@ -16,6 +18,18 @@ function TripDetail({ route, navigation }) {
     navigation.popToTop();
   };
   
+  const Hamburger=(
+  <Box style={styles.editbutton}>
+  <Menu w="190" trigger={triggerProps => {
+  return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
+          <Image style={styles.edit} source={ require("./../../assets/outline/edit.png")}/>
+        </Pressable>;}}>
+    <Menu.Item onPress={() => {navigation.navigate("Edit Trip", { id })}}>Edit</Menu.Item>
+    <Menu.Item onPress={handleDelete} >Delete</Menu.Item>
+  </Menu>
+</Box>)
+ let deleteButton;
+  if(authStore.user._id === trip.userId)deleteButton =  Hamburger
   useLayoutEffect(() => {
     navigation.setOptions({
       title: trip.title
@@ -26,17 +40,17 @@ function TripDetail({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-
-      <TouchableOpacity onPress={() => {navigation.navigate("Edit Trip", { id })}} style={styles.editbutton}>
+      {deleteButton}
+      {/* <TouchableOpacity onPress={() => {navigation.navigate("Edit Trip", { id })}} style={styles.editbutton}>
           <Image style={styles.edit} source={ require("./../../assets/outline/edit.png")}/>
-    </TouchableOpacity>
-<View style={styles.containerSecond}>
+    </TouchableOpacity> */}
       <Image
         style={styles.tripImage}
         source={{
-          uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
+          uri:`${trip.image}`,
         }}
       />
+  <View style={styles.containerSecond}>
     <View style={styles.titleContener}>
     <Image style={styles.pin} source={ require("./../../assets/outline/pin.png")}/>
       <Text style={styles.title}>
@@ -45,18 +59,11 @@ function TripDetail({ route, navigation }) {
       <View style={{flexGrow:1}}></View>
       <Image style={styles.star} source={ require("./../../assets/outline/star.png")}/>
       </View>
-     
       {/* <Text style={styles.location}>Paris, France</Text> */}
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 800}}>
       <Text style={styles.para}>{trip.description}</Text>
+      </ScrollView>
       <StatusBar style="auto" />
-      <Container style={styles.buttonn}>
-        <TouchableOpacity
-          style={styles.appButtonContainer}
-          onPress={handleDelete}
-        >
-          <Text style={styles.appButtonText}>Delete</Text>
-        </TouchableOpacity>
-      </Container>
       </View>
     </View>
   );
@@ -121,13 +128,24 @@ const styles = StyleSheet.create({
   },
   editbutton:{
     position:'absolute',
-    top:50,
-    right: 15,
+    top:60,
+    right: 20,
     zIndex:1,
   },
   edit:{
     width:24,
     height:24,
+    ...Platform.select({
+      ios: {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,    
+      },
+      android: {
+          elevation: 5,
+      },
+      }),
   },
   pin:{
     tintColor:"red",
@@ -139,7 +157,7 @@ const styles = StyleSheet.create({
     alignItems:"center",
   },
   containerSecond:{
-    
+    padding:10,
   }
 });
 
