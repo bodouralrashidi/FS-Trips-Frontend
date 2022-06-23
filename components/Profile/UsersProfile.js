@@ -25,13 +25,19 @@ import { observer } from "mobx-react";
 function UsersProfile({ navigation, route }) {
   const { userId } = route.params;
   useEffect(() => {
-    profileStore.fetchProfile(userId);
+    profileStore.fetchVisitedProfile(userId);
   }, []);
-  const userProfile = profileStore.profile;
+  const userProfile = profileStore.visitedProfile;
+  if (!userProfile)
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Loading ..</Text>
+      </View>
+    );
   const [user, profile, trips] = profileStore.getUserProfileTrips(userProfile);
   function renderTrips({ item: trip }) {
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Trip Detail", { id: trip._id })}>
         <View style={styles.container}>
           <Image
             style={styles.image}

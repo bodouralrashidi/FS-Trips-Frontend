@@ -92,13 +92,19 @@ function TripDetail({ route, navigation }) {
   }, [trip.title]);
 
   if (!trip) return <Text>Loading</Text>;
+
+  const handleVisited = () => {
+          if (trip.userId === authStore.user._id)
+          {
+            navigation.navigate("MyProfile")
+          }else {
+    navigation.navigate("UsersProfile", { userId: trip.userId })}
+  }
   return (
     <View style={styles.container}>
       {/* Find User Button */}
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("UsersProfile", { userId: trip.userId });
-        }}
+        onPress={handleVisited}
         style={styles.informationContainer}
       >
         <View style={styles.avatarContainer}>
@@ -121,10 +127,12 @@ function TripDetail({ route, navigation }) {
           />
           <Text style={styles.title}>{trip.location}</Text>
           <View style={{ flexGrow: 1 }}></View>
+          <TouchableOpacity onPress={()=> tripStore.addFavTrips(trip)}>
           <Image
             style={styles.star}
             source={require("./../../assets/outline/star.png")}
           />
+          </TouchableOpacity>
         </View>
         {/* <Text style={styles.location}>Paris, France</Text> */}
         <ScrollView

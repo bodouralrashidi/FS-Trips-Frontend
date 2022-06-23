@@ -16,6 +16,7 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  View,
 } from "react-native";
 export default function EditProfile({ route, navigation }) {
   const user = route.params.user;
@@ -51,7 +52,7 @@ export default function EditProfile({ route, navigation }) {
   };
 
   return (
-    <ScreenContainer scrollable={true} hasSafeArea={true}>
+    <ScreenContainer scrollable={true} hasSafeArea={false}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView5A}
         enabled={true}
@@ -63,10 +64,15 @@ export default function EditProfile({ route, navigation }) {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text style={StyleSheet.flatten([styles.textEa, { color: "black" , fontWeight: "bold"}])}>
+          <Text
+            style={StyleSheet.flatten([
+              styles.textEa,
+              { color: "hsl(224, 53%, 40%)", fontWeight: "bold", fontSize: 20 },
+            ])}
+          >
             Create Your Profile
           </Text>
-        
+
           <Image
             style={StyleSheet.flatten([styles.imageSq])}
             resizeMode="cover"
@@ -74,48 +80,53 @@ export default function EditProfile({ route, navigation }) {
               uri: EditProfile.image,
             }}
           />
-          <TextField
-            style={styles.textFieldK7}
-            type="underline"
-            label="First Name"
-            name="First Name"
-           
-            value={Edituser.Fname}
-            keyboardType="default"
-            leftIconMode="inset"
-            onChangeText={(Fname) => setEdituser({ ...Edituser, Fname })}
-          />
-          <TextField
-            style={styles.textFieldK7}
-            type="underline"
-            label="Last Name"
-            name="Last Name"
-            value={Edituser.Lname}
-            keyboardType="default"
-            leftIconMode="inset"
-            onChangeText={(Lname) => setEdituser({ ...Edituser, Lname })}
-          />
-          <TextField
-            style={styles.textFieldK7}
-            type="underline"
-            label="image"
-            name="image"
-            value={EditProfile.image}
-            keyboardType="default"
-            leftIconMode="inset"
-            onChangeText={(image) => setEditProfile({ ...EditProfile, image })}
-          />
-          <TextField
-            style={styles.textField8U}
-            type="underline"
-            label="Bio"
-            name="bio"
-            maxLength={200}
-            value={EditProfile.bio}
-            keyboardType="default"
-            leftIconMode="inset"
-            onChangeText={(bio) => setEditProfile({ ...EditProfile, bio })}
-          />
+          <View>
+            <TextField
+              style={styles.textFieldK7}
+              type="underline"
+              label="First Name"
+              name="First Name"
+              value={Edituser.Fname}
+              keyboardType="default"
+              leftIconMode="inset"
+              onChangeText={(Fname) => setEdituser({ ...Edituser, Fname })}
+            />
+            <TextField
+              style={styles.textFieldK7}
+              type="underline"
+              label="Last Name"
+              name="Last Name"
+              activeUnderlineColor="hsl(224, 53%, 40%)"
+              value={Edituser.Lname}
+              keyboardType="default"
+              leftIconMode="inset"
+              onChangeText={(Lname) => setEdituser({ ...Edituser, Lname })}
+            />
+            <TextField
+              style={styles.textFieldK7}
+              type="underline"
+              label="image"
+              name="image"
+              activeUnderlineColor="hsl(224, 53%, 40%)"
+              value={EditProfile.image}
+              keyboardType="default"
+              leftIconMode="inset"
+              onChangeText={(image) =>
+                setEditProfile({ ...EditProfile, image })
+              }
+            />
+            <TextField
+              style={styles.textField8U}
+              type="underline"
+              label="Bio"
+              name="bio"
+              maxLength={200}
+              value={EditProfile.bio}
+              keyboardType="default"
+              leftIconMode="inset"
+              onChangeText={(bio) => setEditProfile({ ...EditProfile, bio })}
+            />
+          </View>
         </Container>
         <Container
           style={styles.containerVk}
@@ -164,20 +175,22 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   textFieldK7: {
-    height: 50,
-    marginTop: 16,
-    borderWidth: 2,
-    borderColor: "#97e5f1",
+    height: 70,
+    marginTop: 20,
+    borderBottomWidth: 2,
+    borderColor: "hsl(224, 53%, 40%)",
+    width: 350,
   },
   textField8U: {
-    height: 100,
-    marginTop: 16,
-    borderWidth: 2,
-    borderColor: "#97e5f1",
+    height: 70,
+    marginTop: 20,
+    borderBottomWidth: 2,
+    borderColor: "hsl(224, 53%, 40%)",
+    width: 350,
   },
   appButtonContainer: {
     marginTop: 40,
-    backgroundColor: "#97e5f1",
+    backgroundColor: "hsl(224, 53%, 40%)",
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",

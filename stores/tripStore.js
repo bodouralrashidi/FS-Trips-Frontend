@@ -11,7 +11,7 @@ class TripStore {
 
   trips = [];
   UserTrips = [];
-
+  fav = [];
   singleTrip;
 
   emptyTrip = {
@@ -20,6 +20,10 @@ class TripStore {
     image: "",
     location: "",
   };
+  addFavTrips = (trip) => {
+    this.fav.push(trip)
+  }
+
 
   fetchTrips = async () => {
     const [response, error] = await tryCatch(() => instance.get(baseURL));

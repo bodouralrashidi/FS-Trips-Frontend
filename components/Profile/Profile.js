@@ -44,9 +44,9 @@ function Profile({ navigation }) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "first":
-        return <TripsTabView trips={trips} />;
+        return <TripsTabView trips={trips} navigation={navigation} />;
       case "second":
-        return <FavouriteTabView />;
+        return <FavouriteTabView trips={trips} navigation={navigation} />;
       default:
         return null;
     }
@@ -54,7 +54,7 @@ function Profile({ navigation }) {
 
   return (
     <>
-      <View style={{ marginTop: 60 , marginBottom: 30}}>
+      <View style={{ marginTop: 60, marginBottom: 30 }}>
         <View style={styles.box}>
           <Image
             style={styles.imageSq}
@@ -121,12 +121,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   box: {
-  
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     height: 120,
-   
   },
   imageSq: {
     width: 100,
