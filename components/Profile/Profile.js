@@ -18,7 +18,7 @@ import { observer } from "mobx-react";
 
 //Navigation import
 const TripsRoute = () => <TripsTabView />;
-const FavouriteRoute = () => <FavouriteTabView />;
+const FavouriteRoute = () => <TripsTabView />;
 const renderScene = SceneMap({
   first: TripsRoute,
   second: FavouriteRoute,
@@ -46,7 +46,9 @@ function Profile({ navigation }) {
       case "first":
         return <TripsTabView trips={trips} />;
       case "second":
-        return <FavouriteTabView />;
+        return (
+          <TripsTabView trips={trips.filter(({ favourite }) => favourite)} />
+        );
       default:
         return null;
     }
@@ -54,7 +56,7 @@ function Profile({ navigation }) {
 
   return (
     <>
-      <View style={{ marginTop: 60 , marginBottom: 30}}>
+      <View style={{ marginTop: 60, marginBottom: 30 }}>
         <View style={styles.box}>
           <Image
             style={styles.imageSq}
@@ -121,12 +123,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   box: {
-  
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     height: 120,
-   
   },
   imageSq: {
     width: 100,
