@@ -17,16 +17,16 @@ const TripForm = ({ trip, navigation }) => {
   const isNew = !trip;
   const initialValues = isNew ? tripStore.emptyTrip : trip;
 
-  const onSubmit = async (values, actions) => {
-    if (isNew) {
-      const userId = authStore.user._id;
-      await tripStore.addTrip({ ...values, userId });
-      actions.resetForm();
-    } else {
-      await tripStore.updateTrip(values);
-      navigation.goBack();
-    }
-  };
+  // const onSubmit = async (values, actions) => {
+  //   if (isNew) {
+  //     const userId = authStore.user._id;
+  //     await tripStore.addTrip({ ...values, userId });
+  //     actions.resetForm();
+  //   } else {
+  //     await tripStore.updateTrip(values);
+  //     navigation.goBack();
+  //   }
+  // };
 
   return (
     <Formik
@@ -39,7 +39,8 @@ const TripForm = ({ trip, navigation }) => {
           })
         }else{
         if (isNew) {
-          await tripStore.addTrip(values)& toast.show({
+          const userId = authStore.user._id;
+          await tripStore.addTrip({ ...values, userId })& toast.show({
             description: "Trip Has Been Added 🔥",
             placement: "top"
           });;
