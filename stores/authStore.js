@@ -2,6 +2,7 @@ import { makeAutoObservable, observable, action, runInAction } from "mobx";
 import instance from "./instance";
 import jwt_decode from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import profileStore from "./profileStore";
 
 class AuthStore {
   user = null;
@@ -37,7 +38,10 @@ class AuthStore {
     await AsyncStorage.setItem("myToken", jsonValue);
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     const decoded = jwt_decode(token);
-    runInAction(() => (this.user = decoded));
+    runInAction(() => {
+      this.user = decoded;
+      profileStore.fetchProfile(decoded._id);
+    });
   };
 
   signout = () => {
