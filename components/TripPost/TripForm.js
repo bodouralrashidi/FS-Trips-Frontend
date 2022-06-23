@@ -8,9 +8,11 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import React from "react";
+import {  useToast } from 'native-base';
 import tripStore from "../../stores/tripStore";
 
 const TripForm = ({ trip, navigation }) => {
+  const toast = useToast();
   const isNew = !trip;
   const initialValues = isNew ? tripStore.emptyTrip : trip;
 
@@ -18,18 +20,31 @@ const TripForm = ({ trip, navigation }) => {
     <Formik
       initialValues={initialValues}
       onSubmit={async (values, actions) => {
+        if ((!values.title) || (!values.description)|| (!values.image)|| (!values.location)) {
+          toast.show({
+            description: "Check Your Inputs 😊 ",
+            placement: "top"
+          })
+        }else{
         if (isNew) {
-          await tripStore.addTrip(values);
+          await tripStore.addTrip(values)& toast.show({
+            description: "Trip Has Been Added 🔥",
+            placement: "top"
+          });;
           actions.resetForm();
         } else {
-          await tripStore.updateTrip(values);
+          await tripStore.updateTrip(values)& toast.show({
+            description: "Updated ✅ ",
+            placement: "top"
+          });
           navigation.goBack();
         }
       }}
+    }
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
             <TextInput
               style={styles.textInput}
               onChangeText={handleChange("title")}
@@ -61,10 +76,14 @@ const TripForm = ({ trip, navigation }) => {
               value={values.location}
             />
           </ScrollView>
-          <View style={styles.spacer}></View>
-          <TouchableOpacity onPress={handleSubmit}>
-            <Text style={styles.submitButton}>{isNew ? "ADD" : "UPDATE"}</Text>
+          
+          <View style={styles.spacer}>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            style={styles.appButtonContainer}>
+            <Text style={styles.appButtonText}>{isNew ? "ADD" : "UPDATE"}</Text>
           </TouchableOpacity>
+          </View>
         </View>
       )}
     </Formik>
@@ -78,23 +97,40 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textInput: {
-    borderWidth: 1,
+    borderBottomWidth:1,
     borderColor: "hsl(210,8%,75%)",
-    borderRadius: 30,
+    borderRadius: 0,
     marginTop: 20,
     padding: 10,
   },
   spacer: {
     flexGrow: 1,
+    alignItems: "center",
   },
   submitButton: {
     marginBottom: 15,
     padding: 16,
-    borderRadius: 30,
+    borderRadius: 20,
     overflow: "hidden",
     color: "white",
     fontWeight: "bold",
     backgroundColor: "hsl(174, 62%, 47%)",
     textAlign: "center",
+  },
+  appButtonContainer: {
+    elevation: 8,
+    backgroundColor: "hsl(224, 53%, 40%)" ,
+    borderRadius: 100,
+    paddingVertical: 15,
+    width: 180,
+    marginTop: 0,
+    marginBottom: 50,
+  },
+  appButtonText: {
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
   },
 });

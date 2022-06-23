@@ -8,19 +8,35 @@ import tripStore from "../../stores/tripStore";
 import { Feather } from "@expo/vector-icons";
 import { AlertDialog,Menu,Box,Pressable,HamburgerIcon,Avatar} from "native-base";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import geolocation from "./../../geolocation"
+import Marker from 'react-native-maps';
 function TripDetail({ route, navigation }) {
   const { id } = route.params;
   tripStore.setSingleTripWithId(id);
+
+  //Get geolocation from json 
+  const geolocationMap =  geolocation.find((country)=>(country.name == "Kuwait"))
+
   const trip = tripStore.singleTrip ?? tripStore.emptyTrip;
-  // trip.userId
-    // findUser= authStore.users._id.filter((user) => user == trip.userId)
-   const findUser =  authStore.Users.find((userss)=> trip.userId == userss._id)
+
+  //Handle User fname lname
+  let Fname
+  let Lname
+  if (!trip.userId){
+    Fname = ""
+    Lname = ""
+  }else{
+    const findUser =  authStore.Users.find((userss)=> trip.userId == userss._id);
+    Fname = findUser.Fname
+    Lname = findUser.Lname
+  }
 
   const handleDelete = async () => {
     await tripStore.deleteTrip(id);
     navigation.popToTop();
   };
   
+  //Hamburger Icon 
   const Hamburger=(
   <Box style={styles.editbutton}>
   <Menu w="190" trigger={triggerProps => {
@@ -31,6 +47,8 @@ function TripDetail({ route, navigation }) {
     <Menu.Item onPress={handleDelete} >Delete</Menu.Item>
   </Menu>
 </Box>)
+
+//handel user delete
  let deleteButton;
   if(authStore.user._id === trip.userId )deleteButton =  Hamburger
   useLayoutEffect(() => {
@@ -48,18 +66,14 @@ function TripDetail({ route, navigation }) {
         <View style={styles.avatarContainer}>
            <Image style={styles.avatar} source={ require("./../../assets/outline/user.png")}/>
         </View>
-        <Text style={styles.usernamePost}  >{`${findUser.Fname} ${findUser.Lname}`}</Text>
+        <Text style={styles.usernamePost}  >{`${Fname} ${Lname}`}</Text>
     </TouchableOpacity>
-    
+    {/* Delete button */}
       {deleteButton}
-      {/* <TouchableOpacity onPress={() => {navigation.navigate("Edit Trip", { id })}} style={styles.editbutton}>
-          <Image style={styles.edit} source={ require("./../../assets/outline/edit.png")}/>
-    </TouchableOpacity> */}
+
       <Image
         style={styles.tripImage}
-        source={{
-          uri:`${trip.image}`,
-        }}
+        source={{uri:`${trip.image}`,}}
       />
   <View style={styles.containerSecond}>
     <View style={styles.titleContener}>
@@ -73,6 +87,20 @@ function TripDetail({ route, navigation }) {
       {/* <Text style={styles.location}>Paris, France</Text> */}
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 800}}>
       <Text style={styles.para}>{trip.description}</Text>
+      
+
+      <View style={styles.titleContener}>
+      <Image style={styles.mapIcon}  source={ require("./../../assets/outline/map.png")}/>
+        <Text style={styles.title}>Map: </Text>
+      </View>
+      <View style={styles.containermap}>
+        <Marker style={styles.map} initialRegion={{
+      latitude: geolocationMap.latitude,
+      longitude:geolocationMap.longitude,
+      latitudeDelta: 3.1,
+      longitudeDelta: 0.005
+    }} />
+        </View>
       </ScrollView>
       <StatusBar style="auto" />
       </View>
@@ -163,6 +191,11 @@ const styles = StyleSheet.create({
     width:24,
     height:24,
   },
+  mapIcon:{
+    tintColor:"black",
+    width:24,
+    height:24,
+  },
   titleContener:{
     flexDirection:"row",
     alignItems:"center",
@@ -215,7 +248,16 @@ const styles = StyleSheet.create({
   paddingLeft:45,
   width:200,
   fontWeight:"300",
-  }
+  },
+  containermap:{
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  map: {
+    width: "100%",
+    borderRadius:10,
+    height: 250,
+  },
 });
 
 export default observer(TripDetail);
