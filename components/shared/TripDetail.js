@@ -20,10 +20,6 @@ import Marker from 'react-native-maps';
 function TripDetail({ route, navigation }) {
   const { id } = route.params;
   tripStore.setSingleTripWithId(id);
-
-  //Get geolocation from json 
-  const geolocationMap =  geolocation.find((country)=>(country.name == "Kuwait"))
-
   const trip = tripStore.singleTrip ?? tripStore.emptyTrip;
 
   //Handle User fname lname
@@ -65,6 +61,10 @@ function TripDetail({ route, navigation }) {
   }, [trip.title]);
 
   if (!trip) return <Text>Loading</Text>;
+
+  //Get geolocation from json 
+  const geolocationMap =  geolocation.find((country)=>(country.name == trip.location))
+
   return (
     <View style={styles.container}>
       {/* Find User Button */}

@@ -6,6 +6,8 @@ import {
   ScrollView,
   Text,
 } from "react-native";
+import geolocation from "./../../geolocation"
+import Checkbox from 'expo-checkbox';
 import { Formik } from "formik";
 import React from "react";
 import {  useToast } from 'native-base';
@@ -17,6 +19,26 @@ const TripForm = ({ trip, navigation }) => {
   const isNew = !trip;
   const initialValues = isNew ? tripStore.emptyTrip : trip;
 
+  const [products, setProducts] = React.useState([...geolocation]);
+  const handleChangee = (name) => {
+    let temp = products.map((product) => {
+      if (name === product.name) {
+        return { ...product, isChecked: !product.isChecked };
+      }
+      return { ...product, isChecked: false };
+    });
+    setProducts(temp);
+    console.log(name)
+  };
+
+  const listing = products.map((item)=>{
+    return(
+      <View style={styles.locationBox} key={item.name}>
+        <Checkbox value={item.isChecked} onValueChange={() => handleChangee(item.name)}/>
+        <Text style={styles.boxText}>{item.name}</Text>
+      </View>
+    )
+  })
   // const onSubmit = async (values, actions) => {
   //   if (isNew) {
   //     const userId = authStore.user._id;
@@ -32,21 +54,23 @@ const TripForm = ({ trip, navigation }) => {
     <Formik
       initialValues={initialValues}
       onSubmit={async (values, actions) => {
-        if ((!values.title) || (!values.description)|| (!values.image)|| (!values.location)) {
+        if ((!values.title) || (!values.description)|| (!values.image)) {
           toast.show({
             description: "Check Your Inputs 😊 ",
             placement: "top"
           })
         }else{
+          const location = products.find(product=>product.isChecked).name
         if (isNew) {
           const userId = authStore.user._id;
-          await tripStore.addTrip({ ...values, userId })& toast.show({
+          await tripStore.addTrip({ ...values,location , userId })& toast.show({
             description: "Trip Has Been Added 🔥",
             placement: "top"
           });;
           actions.resetForm();
+          setProducts([...geolocation])
         } else {
-          await tripStore.updateTrip(values)& toast.show({
+          await tripStore.updateTrip({...values, })& toast.show({
             description: "Updated ✅ ",
             placement: "top"
           });
@@ -57,7 +81,7 @@ const TripForm = ({ trip, navigation }) => {
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
+          <View showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
             <TextInput
               style={styles.textInput}
               onChangeText={handleChange("title")}
@@ -81,14 +105,13 @@ const TripForm = ({ trip, navigation }) => {
               onBlur={handleBlur("image")}
               value={values.image}
             />
-            <TextInput
-              style={styles.textInput}
-              onChangeText={handleChange("location")}
-              placeholder="Location"
-              onBlur={handleBlur("location")}
-              value={values.location}
-            />
-          </ScrollView>
+            <Text style={styles.textInput}> Location:</Text>
+          <View style={styles.locationContainer}>
+            <ScrollView>
+            {listing}
+            </ScrollView>
+            </View>
+          </View>
           
           <View style={styles.spacer}>
           <TouchableOpacity
@@ -146,4 +169,15 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textTransform: "uppercase",
   },
+  locationBox:{
+    flexDirection:"row",
+    padding:5,
+  },
+  boxText:{
+    marginLeft:10,
+  },
+  locationContainer:{
+    height:150,
+    padding:10
+  }
 });
