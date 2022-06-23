@@ -63,13 +63,10 @@ export default function EditProfile({ route, navigation }) {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text style={StyleSheet.flatten([styles.textEa, { color: "black" }])}>
+          <Text style={StyleSheet.flatten([styles.textEa, { color: "black" , fontWeight: "bold"}])}>
             Create Your Profile
           </Text>
-          <Text style={StyleSheet.flatten([styles.textUm, { color: "black" }])}>
-            Since this is your first time, we just need some basic information
-            to get you started.
-          </Text>
+        
           <Image
             style={StyleSheet.flatten([styles.imageSq])}
             resizeMode="cover"
@@ -82,6 +79,7 @@ export default function EditProfile({ route, navigation }) {
             type="underline"
             label="First Name"
             name="First Name"
+           
             value={Edituser.Fname}
             keyboardType="default"
             leftIconMode="inset"
@@ -112,6 +110,7 @@ export default function EditProfile({ route, navigation }) {
             type="underline"
             label="Bio"
             name="bio"
+            maxLength={200}
             value={EditProfile.bio}
             keyboardType="default"
             leftIconMode="inset"

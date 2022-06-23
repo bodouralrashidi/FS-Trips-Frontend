@@ -11,7 +11,7 @@ function Home({ navigation }) {
   );
 
   return (
-    <View>
+    <View style ={{flex: 1}}>
       <FlatList
         data={trips}
         renderItem={renderItem}

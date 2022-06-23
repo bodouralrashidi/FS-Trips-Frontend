@@ -18,7 +18,6 @@ function TripsTabView({ trips }) {
               uri: trip.image,
             }}
           />
-
           <View style={styles.textContainer}>
             <Text style={styles.text}>{trip.title}</Text>
           </View>

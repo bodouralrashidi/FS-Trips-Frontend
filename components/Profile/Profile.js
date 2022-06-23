@@ -54,7 +54,7 @@ function Profile({ navigation }) {
 
   return (
     <>
-      <View>
+      <View style={{ marginTop: 60 , marginBottom: 30}}>
         <View style={styles.box}>
           <Image
             style={styles.imageSq}
@@ -75,7 +75,7 @@ function Profile({ navigation }) {
             >
               {user.Fname + " " + user.Lname}
             </Text>
-            <Text>{profile.bio}</Text>
+            <Text style={{ width: 240 }}>{profile.bio}</Text>
             <View style={{ marginTop: 15 }}>
               <TouchableOpacity
                 style={styles.appButtonContainer}
@@ -121,10 +121,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   box: {
+  
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    height: 140,
+    height: 120,
+   
   },
   imageSq: {
     width: 100,
