@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Profile from "../Profile/Profile";
 import EditProfile from "../Profile/EditProfile";
 import authStore from "../../stores/authStore";
+import UsersProfile from "../Profile/UsersProfile";
 const { Navigator, Screen } = createNativeStackNavigator();
 
 const ProfileNavigator = () => {
@@ -19,6 +20,7 @@ const ProfileNavigator = () => {
         }}
       />
       <Screen name="Edit" component={EditProfile} />
+      <Screen name="UsersProfile" component={UsersProfile} />
     </Navigator>
   );
 };

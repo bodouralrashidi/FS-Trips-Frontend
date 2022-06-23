@@ -55,7 +55,12 @@ function TripDetail({ route, navigation }) {
           onPress={handleDelete}
         >
           <Text style={styles.appButtonText}>Delete</Text>
+          
         </TouchableOpacity>
+        <TouchableOpacity  onPress={() => navigation.navigate("UsersProfile")}>
+        <Text>by Bodour</Text>
+        </TouchableOpacity>
+
       </Container>
       </View>
     </View>

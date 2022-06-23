@@ -19,13 +19,9 @@ function TripsTabView() {
 
   const trips = tripStore.UserTrips;
 
-  const text = "island";
   function renderTrips({ item: trip }) {
     return (
       <TouchableOpacity
-        style={{
-          padding: 10,
-        }}
       >
         <View style={styles.container}>
           <Image
@@ -50,6 +46,7 @@ function TripsTabView() {
         data={trips}
         renderItem={renderTrips}
         keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.box}
       />
     </View>
   );
@@ -64,7 +61,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
-
   container: {
     width: 150,
     height: 200,

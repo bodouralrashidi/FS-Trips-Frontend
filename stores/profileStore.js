@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import instance from "./instance";
 class ProfileStore {
   constructor() {
@@ -7,6 +7,7 @@ class ProfileStore {
   Profile = [];
   CurrentUser = {};
 Profile ={}
+Profiledata = {}
   fetchProfile = async () => {
     try {
       const response = await instance.get("/profiles");
@@ -27,7 +28,6 @@ Profile ={}
       console.log(updateUser, "updated/////");
        const res2 = await instance.put(`/user/${userId}`, updateUser);
       const res = await instance.put(`/${userId}`, updatedProfile);
-     
     } catch (error) {
       console.log("Profiletore-> updatedProfile-> error", error);
     }
@@ -36,14 +36,14 @@ Profile ={}
   getUserInfo = async (userId) => {
     try {
       const res = await instance.get(`/users`);
-      console.log(res.data);
-
       res.data.forEach((user) => {
         if (user._id === userId) {
-          this.CurrentUser = user;
-          console.log(user, "we found the user");
+         this.CurrentUser = user;
+          // console.log(user, "we found the user");
+          // console.log(this.CurrentUser, "current user from store")
         }
       });
+
     } catch (error) {
       console.log("Profiletore-> updatedProfile-> error", error);
     }
