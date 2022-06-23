@@ -4,56 +4,48 @@ class ProfileStore {
   constructor() {
     makeAutoObservable(this);
   }
-  Profile = [];
-  CurrentUser = {};
-Profile ={}
-Profiledata = {}
-  fetchProfile = async () => {
-    try {
-      const response = await instance.get("/profiles");
-      this.Profile = response.data;
-    } catch (error) {
-      console.log("Profiletore-> fetchProfile-> error", error);
-    }
+  /**
+   * Object Schema:
+   * profile --> user --> trips.
+   *
+   * i.e:
+   * profile = {..., user:{...,trips}}
+   */
+  profile = null;
+
+  fetchProfile = async (userId) => {
+    const [response, error] = await tryCatch(() =>
+      instance.get(`/user-profile/${userId}`)
+    );
+    if (error) return console.error(error);
+
+    runInAction(() => (this.profile = response.data));
   };
 
-  findProfileName = (ProfileId) => {
-    const Profile = this.Profile?.find((Profile) => ProfileId === Profile?._id);
-    console.log(Profile, "store name Profile");
-    return Profile;
+  updateProfile = async (updatedProfile, updatedUser, userId) => {
+    const [response, error] = await tryCatch(() =>
+      instance.put(`/${userId}`, { updatedProfile, updatedUser })
+    );
+    if (error) return console.error(error);
+
+    runInAction(() => (this.profile = response.data));
   };
 
-  updateProfile = async (updatedProfile,updateUser ,userId) => {
-    try {
-      console.log(updateUser, "updated/////");
-       const res2 = await instance.put(`/user/${userId}`, updateUser);
-      const res = await instance.put(`/${userId}`, updatedProfile);
-    } catch (error) {
-      console.log("Profiletore-> updatedProfile-> error", error);
-    }
-  };
-
-  getUserInfo = async (userId) => {
-    try {
-      const res = await instance.get(`/users`);
-      res.data.forEach((user) => {
-        if (user._id === userId) {
-         this.CurrentUser = user;
-          // console.log(user, "we found the user");
-          // console.log(this.CurrentUser, "current user from store")
-        }
-      });
-
-    } catch (error) {
-      console.log("Profiletore-> updatedProfile-> error", error);
-    }
+  getUserProfileTrips = (profile) => {
+    const { userId: user } = profile;
+    const { trips } = user;
+    return [user, profile, trips];
   };
 }
 
+async function tryCatch(promise) {
+  try {
+    const response = await promise();
+    return [response, null];
+  } catch (error) {
+    return [null, error];
+  }
+}
 
 const profileStore = new ProfileStore();
-profileStore.fetchProfile
-// It will only call this function when the app first starts
 export default profileStore;
-
-
