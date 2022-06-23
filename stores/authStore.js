@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthStore {
   user = null;
-  users = [];
+  Users = [];
   constructor() {
     makeAutoObservable(this);
   }
