@@ -9,24 +9,25 @@ import {
 import { Formik } from "formik";
 import React from "react";
 import tripStore from "../../stores/tripStore";
+import authStore from "../../stores/authStore";
 
 const TripForm = ({ trip, navigation }) => {
   const isNew = !trip;
   const initialValues = isNew ? tripStore.emptyTrip : trip;
 
+  const onSubmit = async (values, actions) => {
+    if (isNew) {
+      const userId = authStore.user._id;
+      await tripStore.addTrip({ ...values, userId });
+      actions.resetForm();
+    } else {
+      await tripStore.updateTrip(values);
+      navigation.goBack();
+    }
+  };
+
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={async (values, actions) => {
-        if (isNew) {
-          await tripStore.addTrip(values);
-          actions.resetForm();
-        } else {
-          await tripStore.updateTrip(values);
-          navigation.goBack();
-        }
-      }}
-    >
+    <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
           <ScrollView>
