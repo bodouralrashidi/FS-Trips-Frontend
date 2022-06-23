@@ -34,8 +34,8 @@ function Login({ navigation }) {
     }else{
     await authStore.signin(user);
    const token=  await AsyncStorage.getItem("myToken")
-    if (token) toast.show({description: "Welcome 😄",placement: "top"})
-    if (!token)  toast.show({description: "❌",placement: "top"})
+    if (authStore.user) toast.show({description: "Welcome 😄",placement: "top"})
+    if (!authStore.user)  toast.show({description: "❌",placement: "top"})
   }
   };
 
