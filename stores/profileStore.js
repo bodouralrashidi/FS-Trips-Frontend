@@ -12,6 +12,7 @@ class ProfileStore {
    * profile = {..., user:{...,trips}}
    */
   profile = null;
+  visitedProfile = null;
 
   fetchProfile = async (userId) => {
     const [response, error] = await tryCatch(() =>
@@ -20,6 +21,15 @@ class ProfileStore {
     if (error) return console.error(error);
 
     runInAction(() => (this.profile = response.data));
+  };
+
+  fetchVisitedProfile = async (userId) => {
+    const [response, error] = await tryCatch(() =>
+      instance.get(`/user-profile/${userId}`)
+    );
+    if (error) return console.error(error);
+
+    runInAction(() => (this.visitedProfile = response.data));
   };
 
   updateProfile = async (updatedProfile, updatedUser, userId) => {

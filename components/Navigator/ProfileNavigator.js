@@ -7,6 +7,7 @@ import authStore from "../../stores/authStore";
 import UsersProfile from "../Profile/UsersProfile";
 const { Navigator, Screen } = createNativeStackNavigator();
 import { AntDesign } from "@expo/vector-icons";
+import TripDetail from "../shared/TripDetail";
 
 const ProfileNavigator = () => {
   return (
@@ -29,6 +30,11 @@ const ProfileNavigator = () => {
             />
           ),
         }}
+      />
+      <Screen
+        options={{ headerShown: false }}
+        name="Trip Detail"
+        component={TripDetail}
       />
       <Screen name="UsersProfile" component={UsersProfile} />
     </Navigator>

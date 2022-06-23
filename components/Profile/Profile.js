@@ -44,7 +44,7 @@ function Profile({ navigation }) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "first":
-        return <TripsTabView trips={trips} />;
+        return <TripsTabView trips={trips} navigation={navigation} />;
       case "second":
         return (
           <TripsTabView trips={trips.filter(({ favourite }) => favourite)} />

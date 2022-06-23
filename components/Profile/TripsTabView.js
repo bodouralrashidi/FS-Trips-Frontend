@@ -7,10 +7,12 @@ import {
   FlatList,
 } from "react-native";
 
-function TripsTabView({ trips }) {
+function TripsTabView({ navigation,trips }) {
   function renderTrips({ item: trip }) {
     return (
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Trip Detail", { id: trip._id })}
+      >
         <View style={styles.container}>
           <Image
             style={styles.image}

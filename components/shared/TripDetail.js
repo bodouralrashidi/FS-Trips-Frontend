@@ -87,16 +87,23 @@ function TripDetail({ route, navigation }) {
 
   if (!trip) return <Text>Loading</Text>;
 
-  //Get geolocation from json 
-  const geolocationMap =  geolocation.find((country)=>(country.name == trip.location))
+  //Get geolocation from json
+  const geolocationMap = geolocation.find(
+    (country) => country.name == trip.location
+  );
 
+  const handleVisited = () => {
+    if (trip.userId === authStore.user._id) {
+      navigation.navigate("MyProfile");
+    } else {
+      navigation.navigate("UsersProfile", { userId: trip.userId });
+    }
+  };
   return (
     <View style={styles.container}>
       {/* Find User Button */}
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("Profile", trip.userId);
-        }}
+        onPress={handleVisited}
         style={styles.informationContainer}
       >
         <View style={styles.avatarContainer}>

@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
   Image,
   Text,
-  FlatList
+  FlatList,
 } from "react-native";
-import { TabView, SceneMap,TabBar } from "react-native-tab-view";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import FavouriteTabView from "./FavouriteTabView";
 import TripsTabView from "./TripsTabView";
 import EditProfile from "./EditProfile";
@@ -22,73 +22,78 @@ import { useEffect } from "react";
 import { observer } from "mobx-react";
 //Navigation import
 
-// profileStore.getUserInfo(authStore.user._id)
-// const currentUser = profileStore.CurrentUser
-// console.log(currentUser, "profile currentrr usewr")
-
-
-
- function Profile({ navigation , userId}) {
-    //add user id  and fetch profile
-    useEffect(() => {
-        tripStore.fetchtripsUser(authStore.user._id);
-
-      }, []);
-      const trips = tripStore.UserTrips;
-    function renderTrips({ item: trip }) {
-        return (
-          <TouchableOpacity
-          >
-            <View style={styles.container}>
-              <Image
-                style={styles.image}
-                source={{
-                  uri: trip.image,
-                }}
-              />
-    
-              <View style={styles.textContainer}>
-                <Text style={styles.text}>{trip.title}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        );
-      }
-  return (
-    <>
-
-      <View style={styles.center}>
-      <Image
-            style={styles.imageSq}
+function UsersProfile({ navigation, route }) {
+  const { userId } = route.params;
+  useEffect(() => {
+    profileStore.fetchVisitedProfile(userId);
+  }, []);
+  const userProfile = profileStore.visitedProfile;
+  if (!userProfile)
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Loading ..</Text>
+      </View>
+    );
+  const [user, profile, trips] = profileStore.getUserProfileTrips(userProfile);
+  function renderTrips({ item: trip }) {
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate("Trip Detail", { id: trip._id })}>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
             source={{
-              uri: "http://cdn.cnn.com/cnnnext/dam/assets/180219103122-zanzibar-and-its-islands---mnemba-a-view-from-the-sky-mnemba-island-lodge.jpg"
+              uri: trip.image,
             }}
           />
-         <Text style={{ padding:5,fontWeight:"bold", fontSize: 20, color:  "hsl(224, 53%, 40%)"}}>
-            Bodour Alrasidi
-          </Text>
-          <Text style={{padding:5, textAlign: "center"}}>
-           udhadfhaoiwdfhow'iqahd'oawihd'waoihd'awoidhaw'oidhawo'idhwio
-          </Text>
-      </View>
-        <Text style={styles.postContainer}>
-  Post
-     </Text>
 
-     <View style={styles.box}>
-      <FlatList
-        data={trips}
-        renderItem={renderTrips}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={styles.box}
-      />
-    </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>{trip.title}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+  return (
+    <>
+      <View style={styles.center}>
+        <Image
+          style={styles.imageSq}
+          source={{
+            uri:
+              profile.image === ""
+                ? "https://www.jennybeaumont.com/wp-content/uploads/2015/03/placeholder.gif"
+                : profile.image,
+          }}
+        />
+        <Text
+          style={{
+            padding: 5,
+            fontWeight: "bold",
+            fontSize: 20,
+            color: "hsl(224, 53%, 40%)",
+          }}
+        >
+          {user.Fname + " " + user.Lname}
+        </Text>
+        <Text style={{ padding: 5, textAlign: "center" }}>{profile.bio}</Text>
+      </View>
+      <Text style={styles.postContainer}>Post</Text>
+
+      <View style={styles.box}>
+        <FlatList
+          data={trips.slice()}
+          extraData={trips}
+          renderItem={renderTrips}
+          numColumns={2}
+          columnWrapperStyle={styles.flatListColumns}
+          keyExtractor={(item) => item._id}
+        />
+      </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
- 
   scene: {
     flex: 1,
   },
@@ -115,15 +120,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
   },
-  postContainer:
-  { textAlign: 'center',
-    padding:10,
+  postContainer: {
+    textAlign: "center",
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "hsl(224, 53%, 40%)",
     color: "white",
     fontWeight: "bold",
-    width:"100%",
+    width: "100%",
   },
   box: {
     marginHorizontal: 10,
@@ -157,15 +162,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
-  center :
-  {
+  center: {
     paddingLeft: 30,
-    padding:10,
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
-  }
-
-  
+  },
+  flatListColumns: {
+    paddingTop: 10,
+    paddingHorizontal: 20,
+    justifyContent: "space-between",
+  },
 });
 
-export default observer(Profile);
+export default observer(UsersProfile);
